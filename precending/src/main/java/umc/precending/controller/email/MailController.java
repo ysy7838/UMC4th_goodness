@@ -25,7 +25,7 @@ public class MailController {
     @ApiImplicitParam(name="emailDto",value = "이메일 인증번호 위해서 필요합니다!")
     public Response mailSend(@RequestBody @Valid EmailRequestDto emailDto){
         mailService.joinEmail(emailDto.getEmail());
-        return Response.success("2분안에 인증번호를 넣어주세요!");
+        return Response.success("5분안에 인증번호를 넣어주세요!");
     }
     @PostMapping("/mail/auth/check")
     @ResponseStatus(HttpStatus.OK)

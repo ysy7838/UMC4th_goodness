@@ -4,11 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import umc.precending.domain.member.Member;
+import umc.precending.exception.member.MemberDuplicateException;
+import umc.precending.repository.member.MemberRepository;
 import umc.precending.service.redis.MailRedisService;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.security.SecureRandom;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -17,6 +21,11 @@ public class MailService {
     private JavaMailSender mailSender;
     @Autowired
     private MailRedisService redisUtil;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+
     private int authNumber;
 
 
@@ -41,6 +50,7 @@ public class MailService {
 
     //mail을 어디서 보내는지, 어디로 보내는지 , 인증 번호를 html 형식으로 어떻게 보내는지 작성합니다.
     public void joinEmail(String email) {
+        ExistEmail(email);
         makeRandomNumber();
         String setFrom = "dionisos198@naver.com"; // email-config에 설정한 자신의 이메일 주소를 입력
         String toMail = email;
@@ -69,7 +79,14 @@ public class MailService {
             // 이러한 경우 MessagingException이 발생
             e.printStackTrace();//e.printStackTrace()는 예외를 기본 오류 스트림에 출력하는 메서드
         }
-        redisUtil.setDataExpire(Integer.toString(authNumber),toMail,60*2L);
+        redisUtil.setDataExpire(Integer.toString(authNumber),toMail,60*5L);
 
+    }
+    public void ExistEmail(String email){
+        Optional<Member> member=memberRepository.findMemberByUsername(email);
+        if(!member.isEmpty()){
+            System.out.println(member);
+            throw new MemberDuplicateException();
+        }
     }
 }

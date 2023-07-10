@@ -34,6 +34,9 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	implementation 'javax.mail:mail:1.4.7'
+	// Spring Context Support
+	implementation 'org.springframework:spring-context-support:5.3.9'
 
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'

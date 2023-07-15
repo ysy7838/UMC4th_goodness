@@ -9,6 +9,8 @@ import umc.precending.exception.email.AuthNumNotCorrectException;
 import umc.precending.exception.member.MemberDuplicateException;
 import umc.precending.exception.member.MemberLoginFailureException;
 import umc.precending.exception.member.MemberNotFoundException;
+import umc.precending.exception.person.PersonAddClubException;
+import umc.precending.exception.person.PersonAddCorporateException;
 import umc.precending.exception.token.TokenNotCorrectException;
 import umc.precending.response.Response;
 
@@ -50,4 +52,17 @@ public class ExceptionAdvice {
     public Response AuthNumNotCorrect(){
         return Response.failure(400,"인증 번호가 일치하지 않습니다");
     }
+
+    @ExceptionHandler(PersonAddCorporateException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response MemberAddCorporateException(){
+        return Response.failure(409,"이미 이 기업을 추천하셨습니다");
+    }
+
+    @ExceptionHandler(PersonAddClubException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response MemberAddClubException(){
+        return Response.failure(409,"이미 이 동아리를 추천하셨습니다");
+    }
+
 }

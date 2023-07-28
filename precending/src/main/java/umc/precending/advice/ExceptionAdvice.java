@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import umc.precending.exception.email.AuthNumNotCorrectException;
+import umc.precending.exception.image.ImageNotSupportedException;
 import umc.precending.exception.member.MemberDuplicateException;
 import umc.precending.exception.member.MemberLoginFailureException;
 import umc.precending.exception.member.MemberNotFoundException;
@@ -43,6 +44,12 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response tokenNotCorrectException() {
         return Response.failure(400, "저장된 토큰의 정보와 일치하지 않습니다.");
+    }
+
+    @ExceptionHandler(ImageNotSupportedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response imageNotSupportedException(ImageNotSupportedException e) {
+        return Response.failure(400, e.getMessage());
     }
 
     @ExceptionHandler(AuthNumNotCorrectException.class)

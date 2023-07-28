@@ -13,7 +13,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.security.SecureRandom;
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class MailService {
@@ -25,16 +24,11 @@ public class MailService {
     @Autowired
     private MemberRepository memberRepository;
 
-
     private int authNumber;
-
-
-
 
     public void CheckAuthNum(String email,String authNum){
         redisUtil.checkEmailNumValidation(email,authNum);
     }
-
 
     //임의의 6자리 양수를 반환합니다.
     public void makeRandomNumber() {
@@ -47,12 +41,11 @@ public class MailService {
         authNumber = Integer.parseInt(randomNumber);
     }
 
-
     //mail을 어디서 보내는지, 어디로 보내는지 , 인증 번호를 html 형식으로 어떻게 보내는지 작성합니다.
     public void joinEmail(String email) {
         ExistEmail(email);
         makeRandomNumber();
-        String setFrom = "dionisos198@naver.com"; // email-config에 설정한 자신의 이메일 주소를 입력
+        String setFrom = "chrkb1569@naver.com"; // email-config에 설정한 자신의 이메일 주소를 입력
         String toMail = email;
         String title = "회원 가입 인증 이메일 입니다."; // 이메일 제목
         String content =

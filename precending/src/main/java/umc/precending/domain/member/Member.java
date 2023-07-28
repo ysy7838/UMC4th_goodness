@@ -2,7 +2,6 @@ package umc.precending.domain.member;
 
 import lombok.*;
 import umc.precending.domain.base.BaseEntity;
-import umc.precending.domain.image.Image;
 import umc.precending.domain.image.MemberImage;
 
 import javax.persistence.*;
@@ -50,7 +49,7 @@ public abstract class Member extends BaseEntity {
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "member", orphanRemoval = true)
     protected List<MemberImage> images = new ArrayList<>();
 
-    public  void saveImage(List<MemberImage> images) {
+    public void saveImage(List<MemberImage> images) {
         for(MemberImage image : images) {
             image.initMember(this);
             this.images.add(image);

@@ -5,11 +5,17 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import umc.precending.exception.category.CategoryDuplicateException;
+import umc.precending.exception.category.CategoryNotFoundException;
 import umc.precending.exception.email.AuthNumNotCorrectException;
 import umc.precending.exception.image.ImageNotSupportedException;
 import umc.precending.exception.member.MemberDuplicateException;
 import umc.precending.exception.member.MemberLoginFailureException;
 import umc.precending.exception.member.MemberNotFoundException;
+import umc.precending.exception.post.PostAuthException;
+import umc.precending.exception.post.PostNewsNotSupportedException;
+import umc.precending.exception.post.PostNotFoundException;
+import umc.precending.exception.post.PostVerifyException;
 import umc.precending.exception.token.TokenNotCorrectException;
 import umc.precending.response.Response;
 
@@ -56,5 +62,41 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response AuthNumNotCorrect(){
         return Response.failure(400,"인증 번호가 일치하지 않습니다");
+    }
+
+    @ExceptionHandler(CategoryDuplicateException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response categoryDuplicateException() {
+        return Response.failure(409, "이미 존재하는 카테고리입니다.");
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response categoryNotFoundException() {
+        return Response.failure(404, "카테고리를 찾을 수 없습니다.");
+    }
+
+    @ExceptionHandler(PostNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response postNotFoundException() {
+        return Response.failure(404, "조건에 부합하는 게시글을 찾지 못하였습니다.");
+    }
+
+    @ExceptionHandler(PostAuthException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response postAuthException() {
+        return Response.failure(400, "사용자가 게시글 작성자가 일치하지 않습니다.");
+    }
+
+    @ExceptionHandler(PostVerifyException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response postVerifyException() {
+        return Response.failure(400, "인증이 불가능한 게시글이거나, 이미 인증된 게시글입니다.");
+    }
+
+    @ExceptionHandler(PostNewsNotSupportedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response postNewsNotSupportedException(PostNewsNotSupportedException e) {
+        return Response.failure(400, e.getMessage());
     }
 }

@@ -14,4 +14,7 @@ public interface Person_ClubRepository extends JpaRepository<Person_Club,Long> {
 
     @Query("select pc from Person_Club pc join fetch pc.club where pc.person.id=:personId ORDER BY pc.club.score DESC")
     List<Person_Club> findTop5ByPersonIdOrderByClubScoreDesc(@Param("personId") Long personId, Pageable pageable);
+
+    @Query("select pc from Person_Club pc join fetch pc.club where pc.person.id=:personId ORDER BY pc.club.name")
+    List<Person_Club> findTop5ByPersonIdOrderByClubName(@Param("personId") Long personId,Pageable pageable);
 }

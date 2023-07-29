@@ -8,10 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umc.precending.config.jwt.TokenProvider;
-import umc.precending.domain.member.Club;
-import umc.precending.domain.member.Corporate;
-import umc.precending.domain.member.Member;
-import umc.precending.domain.member.Person;
+import umc.precending.domain.member.*;
 import umc.precending.dto.auth.*;
 import umc.precending.dto.token.TokenDto;
 import umc.precending.dto.token.TokenRequestDto;
@@ -19,11 +16,10 @@ import umc.precending.dto.token.TokenResponseDto;
 import umc.precending.exception.member.MemberDuplicateException;
 import umc.precending.exception.member.MemberLoginFailureException;
 import umc.precending.exception.member.MemberNotFoundException;
-import umc.precending.repository.member.ClubRepository;
-import umc.precending.repository.member.CorporateRepository;
-import umc.precending.repository.member.MemberRepository;
-import umc.precending.repository.member.PersonRepository;
+import umc.precending.repository.member.*;
 import umc.precending.service.redis.RedisService;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,11 +32,14 @@ public class AuthService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
+    private final RecommendRepository recommendRepository;
 
     // 회원가입 - 개인
     @Transactional
     public void signUp(MemberPersonSignUpDto signUpDto) {
         Person personMember = getPersonMember(signUpDto);
+        List<Recommend> recommends=recommendRepository.selectRandom();
+        personMember.setMyTodayRecommendList(recommends);
         memberRepository.save(personMember);
     }
 
@@ -48,6 +47,8 @@ public class AuthService {
     @Transactional
     public void signUp(MemberClubSignUpDto signUpDto) {
         Club clubMember = getClubMember(signUpDto);
+        List<Recommend> recommends=recommendRepository.selectRandom();
+        clubMember.setMyTodayRecommendList(recommends);
         memberRepository.save(clubMember);
     }
 
@@ -55,6 +56,8 @@ public class AuthService {
     @Transactional
     public void signUp(MemberCorporateSignUpDto signUpDto) {
         Corporate corporateMember = getCorporateMember(signUpDto);
+        List<Recommend> recommends=recommendRepository.selectRandom();
+        corporateMember.setMyTodayRecommendList(recommends);
         memberRepository.save(corporateMember);
     }
 

@@ -56,5 +56,7 @@ public class Person extends Member{
         this.phone = phone;
         this.phoneValidation = false;
         this.authority = Authority.ROLE_PERSON;
+        this.CofRC=0;
+        this.changeRecommend=false;
     }
 }

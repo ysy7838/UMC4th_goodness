@@ -26,6 +26,14 @@ public class Club extends Member {
     @Column(name="score",nullable=false)
     private int score;//추가했다
 
+    public void addScore(int score){
+        this.score+=score;
+    }
+
+    public void resetScore(){
+        this.score=0;
+    }
+
     public Club(String name, String birth, String password,
                 String email, String type, String school, String address) {
         this.name = name;
@@ -40,8 +48,8 @@ public class Club extends Member {
         this.address = address;
         this.type = type;
         this.score=0;
+        this.CofRC=0;
+        this.changeRecommend=false;
     }
-    public void addScore(int score){
-        this.score+=score;
-    }
+
 }

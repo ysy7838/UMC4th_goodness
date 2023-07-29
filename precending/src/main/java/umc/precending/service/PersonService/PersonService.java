@@ -12,6 +12,8 @@ import umc.precending.domain.member.*;
 import umc.precending.dto.person.NameScoreClubDto;
 import umc.precending.dto.person.NameScoreCorporateDto;
 import umc.precending.exception.member.MemberNotFoundException;
+import umc.precending.exception.member.MemberNotLoginException;
+import umc.precending.exception.member.MemberWrongTypeException;
 import umc.precending.exception.person.PersonAddClubException;
 import umc.precending.exception.person.PersonAddCorporateException;
 import umc.precending.repository.member.*;
@@ -32,10 +34,16 @@ public class PersonService {
     @Transactional
     public void addScoreCorporate(String CorporateUsername){
         Member member1=memberRepository.findMemberByUsername(CorporateUsername).orElseThrow(MemberNotFoundException::new);
-        Corporate corporate=(Corporate) member1;
+        Corporate corporate;
+        if(member1 instanceof Corporate){
+            corporate=(Corporate) member1;
+        }
+       else{
+           throw new MemberWrongTypeException();
+        }
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         String personUsername=authentication.getName();
-        Member member2=memberRepository.findMemberByUsername(personUsername).orElseThrow(MemberNotFoundException::new);
+        Member member2=memberRepository.findMemberByUsername(personUsername).orElseThrow(MemberNotLoginException::new);
         Person person=(Person) member2;
         if(!personCorporateRepository.existsByPerson_IdAndCorporate_Id(person.getId(), corporate.getId())){
             person.addMyCorporate(corporate);
@@ -47,10 +55,16 @@ public class PersonService {
     @Transactional
     public void addScoreClub(String ClubUsername){
         Member member1=memberRepository.findMemberByUsername(ClubUsername).orElseThrow(MemberNotFoundException::new);
-        Club club=(Club) member1;
+        Club club;
+        if(member1 instanceof Club){
+            club=(Club)member1;
+        }
+        else{
+            throw new MemberWrongTypeException();
+        }
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         String personUsername=authentication.getName();
-        Member member2=memberRepository.findMemberByUsername(personUsername).orElseThrow(MemberNotFoundException::new);
+        Member member2=memberRepository.findMemberByUsername(personUsername).orElseThrow(MemberNotLoginException::new);
         Person person=(Person) member2;
         if(!personClubRepository.existsByPerson_IdAndClub_Id(person.getId(), club.getId())){
             person.addMyClub(club);
@@ -63,32 +77,23 @@ public class PersonService {
     public List<NameScoreCorporateDto> showMyCorporate(){
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         String name=authentication.getName();
-        Member member=memberRepository.findMemberByUsername(name).orElseThrow(MemberNotFoundException::new);
+        Member member=memberRepository.findMemberByUsername(name).orElseThrow(MemberNotLoginException::new);
         Person person=(Person)member;
-        Pageable pageable = PageRequest.of(0, 5, Sort.by("corporate.score").descending());
-        List<Person_Corporate> personCorporates=personCorporateRepository.findTop5ByPersonIdOrderByCorporateScoreDesc(person.getId(),pageable);
+        Pageable pageable = PageRequest.of(0, 5);
+        List<Person_Corporate> personCorporates=personCorporateRepository.findTop5ByPersonIdOrderByCorporateName(person.getId(),pageable);
         List<NameScoreCorporateDto> result=personCorporates.stream().map(c->new NameScoreCorporateDto(c.getCorporate())).collect(Collectors.toList());
         return result;
     }
     public List<NameScoreClubDto> showMyClub(){
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         String name=authentication.getName();
-        Member member=memberRepository.findMemberByUsername(name).orElseThrow(MemberNotFoundException::new);
+        Member member=memberRepository.findMemberByUsername(name).orElseThrow(MemberNotLoginException::new);
         Person person=(Person)member;
-        Pageable pageable = PageRequest.of(0, 5, Sort.by("club.score").descending());
-        List<Person_Club> personClubs=personClubRepository.findTop5ByPersonIdOrderByClubScoreDesc(person.getId(),pageable);
+        Pageable pageable = PageRequest.of(0, 5);
+        List<Person_Club> personClubs=personClubRepository.findTop5ByPersonIdOrderByClubName(person.getId(),pageable);
         List<NameScoreClubDto> result=personClubs.stream().map(c->new NameScoreClubDto(c.getClub())).collect(Collectors.toList());
         return result;
     }
-    public List<NameScoreCorporateDto> showHighestScoreCorporate(){
-        List<Corporate> corporates=corporateRepository.findTop5ByScoreGreaterThanOrderByScoreDesc(0);
-        List<NameScoreCorporateDto> result=corporates.stream().map(c->new NameScoreCorporateDto(c)).collect(Collectors.toList());
-        return result;
-    }
-    public List<NameScoreClubDto> showHighestScoreClub(){
-        List<Club> clubs=clubRepository.findTop5ByScoreGreaterThanOrderByScoreDesc(0);
-        List<NameScoreClubDto> result=clubs.stream().map(c->new NameScoreClubDto(c)).collect(Collectors.toList());
-        return result;
-    }
+
 
 }

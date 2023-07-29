@@ -48,17 +48,5 @@ public class PersonController {
 
 
 
-    @GetMapping("/show/top5/Corporate")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value="가장 많은 점수를 받은 기업을 보기",notes = "가장 많은 점수를 받은 상위 5개 기업을 볼 수 있는 로직")
-    public Response showTop5Corporate(){
-        return Response.success(personService.showHighestScoreCorporate());
-    }
-    @GetMapping("/show/top5/Club")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value="가장 많은 점수를 받은 동아리 보기",notes = "가장 많은 점수를 받은 상위 5개 동아리를 볼 수 있는 로직")
-    public Response showTop5Club(){
-        return Response.success(personService.showHighestScoreClub());
-    }
 
 }

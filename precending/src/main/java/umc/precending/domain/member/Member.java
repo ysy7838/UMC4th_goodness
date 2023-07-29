@@ -2,6 +2,7 @@ package umc.precending.domain.member;
 
 import lombok.*;
 import umc.precending.domain.base.BaseEntity;
+import umc.precending.domain.image.MemberImage;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public abstract class Member extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     protected Authority authority; // 사용자가 어떠한 회원인지를 명시(ex) 개인 회원, 동아리 회원, 기업 회원 등)
 
+
     @Column(name="CofRC",nullable = false)
     protected int CofRC;
 
@@ -75,5 +77,14 @@ public abstract class Member extends BaseEntity {
         }
     }
 
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "member", orphanRemoval = true)
+    protected List<MemberImage> images = new ArrayList<>();
 
+    public void saveImage(List<MemberImage> images) {
+        for(MemberImage image : images) {
+            image.initMember(this);
+            this.images.add(image);
+        }
+    }
 }
+

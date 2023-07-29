@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MemberService {
+public class MemberGroupService {
     private final MemberRepository memberRepository;
     private final RecommendRepository recommendRepository;
     private final MemberTodayRecommendRepository memberTodayRecommendRepository;

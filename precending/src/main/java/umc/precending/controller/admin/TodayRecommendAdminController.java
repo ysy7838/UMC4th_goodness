@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.*;
 import umc.precending.domain.member.Recommend;
 import umc.precending.dto.admin.NewGoodnessDto;
 import umc.precending.repository.member.RecommendRepository;
-import umc.precending.service.Member.MemberService;
+import umc.precending.service.Member.MemberGroupService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/recommend_good")
 public class TodayRecommendAdminController {
 
-    private final MemberService memberService;
+    private final MemberGroupService memberService;
     private final RecommendRepository recommendRepository;
 
 

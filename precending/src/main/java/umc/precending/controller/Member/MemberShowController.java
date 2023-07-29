@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import umc.precending.response.Response;
-import umc.precending.service.Member.MemberService;
+import umc.precending.service.Member.MemberGroupService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/member")
-public class MemberController {
-    private final MemberService memberService;
+public class MemberShowController {
+    private final MemberGroupService memberService;
 
 
     @GetMapping("/show/top5/Corporate")

@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.*;
 import umc.precending.dto.member.LeftRandomRecommendCountDto;
 import umc.precending.dto.member.RecommendShowDto;
 import umc.precending.response.Response;
-import umc.precending.service.Member.MemberService;
+import umc.precending.service.Member.MemberGroupService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/recommend_good")
 public class RecommendController {
 
-    private final MemberService memberService;
+    private final MemberGroupService memberService;
 
 
     @GetMapping("/show/MyRecommend")

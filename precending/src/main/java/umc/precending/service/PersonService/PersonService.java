@@ -29,6 +29,8 @@ public class PersonService {
     private final MemberRepository memberRepository;
     private final Person_CorporateRepository personCorporateRepository;
     private final Person_ClubRepository personClubRepository;
+
+    //사용자가 응원할 corporate을 선택하고 그 corporate에 점수를 주는 로직
     @Transactional
     public void addScoreCorporate(String CorporateUsername,Member member){
         Member member1=memberRepository.findMemberByUsername(CorporateUsername).orElseThrow(MemberNotFoundException::new);
@@ -48,6 +50,7 @@ public class PersonService {
             throw new PersonAddCorporateException();
         }
     }
+    //사용자가 응원할 club을 선택하고 그 club에 점수를 주는 로직
     @Transactional
     public void addScoreClub(String ClubUsername,Member member){
         Member member1=memberRepository.findMemberByUsername(ClubUsername).orElseThrow(MemberNotFoundException::new);
@@ -67,6 +70,7 @@ public class PersonService {
             throw new PersonAddClubException();
         }
     }
+    //로그인한 사용자가 자기가 선택한 corporate를 알파벳 순서대로 상위 5개를 보여준다
 
     public List<NameScoreCorporateDto> showMyCorporate(Member member){
        Person person;
@@ -81,6 +85,8 @@ public class PersonService {
         List<NameScoreCorporateDto> result=personCorporates.stream().map(c->new NameScoreCorporateDto(c.getCorporate())).collect(Collectors.toList());
         return result;
     }
+
+    //로그인한 사용자가 자기가 선택한 club을 알파벳 순서대로 상위 5개를 보여준다
     public List<NameScoreClubDto> showMyClub(Member member){
         Person person;
         if(member instanceof Person){

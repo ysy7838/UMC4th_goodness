@@ -29,7 +29,7 @@ public class Person extends Member{
 
     //내가 추가한 것:연관관계 편의 메서드
     public void addMyCorporate(Corporate corporate){
-        Person_Corporate personCorporate=Person_Corporate.createPerson_Corporate(corporate,5);
+        Person_Corporate personCorporate=Person_Corporate.createPerson_Corporate(corporate,1);
         this.personCorporates.add(personCorporate);
         personCorporate.setPerson(this);
     }
@@ -38,7 +38,7 @@ public class Person extends Member{
 
     //내가 추가한 것:연관관계 편의 메서드
     public void addMyClub(Club club){
-        Person_Club personClub=Person_Club.createPerson_Club(club,5);
+        Person_Club personClub=Person_Club.createPerson_Club(club,1);
         this.personClubs.add(personClub);
         personClub.setPerson(this);
     }

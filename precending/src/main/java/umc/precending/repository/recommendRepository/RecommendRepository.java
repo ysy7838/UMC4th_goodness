@@ -9,4 +9,6 @@ import java.util.List;
 public interface RecommendRepository extends JpaRepository<Recommend,Long> {
     @Query(value = "select * from recommend order by RAND() limit 3",nativeQuery = true)
     List<Recommend> selectRandom();
+
+
 }

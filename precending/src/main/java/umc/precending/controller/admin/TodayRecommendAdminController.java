@@ -28,6 +28,12 @@ public class TodayRecommendAdminController {
         recommendService.makeRecommend(createDto);
     }
 
+    @PostMapping("/delete")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "recommend 삭제", notes = "recommend 삭제하는 로직")
+    public void deleteRecommendPost(Long id) {
+       recommendService.deleteRecommendById(id);
+    }
 
 
 

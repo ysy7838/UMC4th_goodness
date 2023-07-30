@@ -1,5 +1,6 @@
 package umc.precending.service.recommend;
 
+import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
@@ -33,7 +34,7 @@ public class RecommendService {
     private final MemberTodayRecommendRepository memberTodayRecommendRepository;
     private final MemberRepository memberRepository;
 
-
+    //매일 오전 8시에는 각 사용자의 추천선행이 바뀌는 로직
     @Scheduled(cron = "0 0 8 * * *")
     @Transactional
     public void changeAllMemberRecommend(){
@@ -41,11 +42,13 @@ public class RecommendService {
         memberRepository.findAll().forEach(m->m.setMyTodayRecommendList(recommendRepository.selectRandom()));
     }
 
+    //추천 선행을 바꿀 수 있는 상태로 변경합니다. 추후 인스타그램이나 광고 시청을 하고 이 로직을 호출하기 하면 될 듯
+
     @Transactional
     public void makeChangeableRecommendation(Member member){
         member.makeChangeableRecommend();
     }
-
+//추천 선행을 바꿀수 있는 기회를 보여주는 로직
     public int showLeftRandomCount(Member member){
         if( !member.isChangeRecommend()){
             return 0;
@@ -54,7 +57,7 @@ public class RecommendService {
             return 1;
         }
     }
-
+    //나의 추천선행을 변경하는 로직
     @Transactional
     public void changeMyRecommendAll(Member member){
        /* Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
@@ -79,7 +82,7 @@ public class RecommendService {
 
     }
 
-
+   //사용자의 추천 선행을 하나 보여주고 사용자가 열어본 점수를 더하는 로직
    @Transactional
     public SingleRecommendShowDto recommendSingleShowDto(int num,Member member){
         List<MemberTodayRecommend> memberTodayRecommends=memberTodayRecommendRepository.findByMemberName(member.getUsername());
@@ -89,7 +92,7 @@ public class RecommendService {
         member.addCofRc();
         return singleRecommendShowDto;
     }
-
+    //추천 선행 만들기
     @Transactional
     public void makeRecommend(RecommendCreateDto dto){
         List<RecommendCategory> categories=getCategories(dto.getCategories());
@@ -118,4 +121,12 @@ public class RecommendService {
             recommendCategory.initCategory(category);
         });
     }
+    //ID로 recommend선행을 삭제합니다
+    @Transactional
+    public void deleteRecommendById(Long id){
+        recommendRepository.deleteById(id);
+    }
+
+
+
 }

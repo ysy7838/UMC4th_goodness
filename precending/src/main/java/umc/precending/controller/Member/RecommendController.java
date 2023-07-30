@@ -3,26 +3,34 @@ package umc.precending.controller.Member;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import umc.precending.dto.member.LeftRandomRecommendCountDto;
-import umc.precending.dto.member.RecommendShowDto;
+import umc.precending.domain.member.Member;
+import umc.precending.dto.Recommend.LeftRandomRecommendCountDto;
+import umc.precending.dto.Recommend.SingleRecommendShowDto;
+import umc.precending.exception.member.MemberNotFoundException;
+import umc.precending.repository.member.MemberRepository;
 import umc.precending.response.Response;
 import umc.precending.service.Member.MemberGroupService;
+import umc.precending.service.recommend.RecommendService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/recommend_good")
 public class RecommendController {
 
-    private final MemberGroupService memberService;
+    private final RecommendService recommendService;
+    private final MemberRepository memberRepository;
 
 
-    @GetMapping("/show/MyRecommend")
+    @PatchMapping("/show/MyRecommend/{num}")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "나의 추천 선행목록을 보여줍니다", notes = "나의 추천 선행 목록을 보여주는 로직")
-    public Response showAll(){
-        RecommendShowDto recommendShowDto=memberService.recommendShowDto();
-        return Response.success(recommendShowDto);
+    @ApiOperation(value = "나의 추천 선행목록을 하나 보여줍니다,그리고 열어본 점수를 더합니다", notes = "나의 추천 선행 목록을 보여주는 로직")
+    public Response showOne(@PathVariable int num){
+        Member findMember=getMember();
+        SingleRecommendShowDto singleRecommendShowDto=recommendService.recommendSingleShowDto(num,findMember);
+        return Response.success(singleRecommendShowDto);
     }
 
 
@@ -30,21 +38,16 @@ public class RecommendController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "나의 추천 선행 목록을 바꿉니다", notes = "나의 추천 선행 목록을 바꾸는 로직")
     public void changeAll(){
-        memberService.changeMyRecommendAll();
+        Member findMember=getMember();
+        recommendService.changeMyRecommendAll(findMember);
     }
 
     @PatchMapping("/make/changeable/Recommend")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "나의 추천 선행 목록을 바꿀수 있는 상태로 바꿉니다", notes = "나의 추천 선행 목록을 바꿀수 있는 상태로 바꾸는 로직")
     public void makeChangeable(){
-        memberService.makeChangeableRecommendation();
-    }
-
-    @PatchMapping("/add/cofrc/score")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "사용자가 나의 추천 선행 목록을 눌러서 확인할때 이걸 호출하십시오. ", notes = "지금까지 추천 선행을 열어본 점수를 member에 저장하는 로직")
-    public void addCofrc(){
-        memberService.addCofrc();
+        Member findMember=getMember();
+        recommendService.makeChangeableRecommendation(findMember);
     }
 
 
@@ -52,8 +55,16 @@ public class RecommendController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value="사용자가 자신의 추천 선행을 다시 랜덤으로 돌릴 수 있는 기회를 보여줍니다",notes = "자신의 추천 선행을 랜덤으로 돌릴 수 있는 횟수를 보여주는 로직")
     public Response showRecommendRandomCount(){
-        LeftRandomRecommendCountDto leftRandomRecommendCountDto=new LeftRandomRecommendCountDto(memberService.showLeftRandomCount());
+        Member findMember=getMember();
+        LeftRandomRecommendCountDto leftRandomRecommendCountDto=new LeftRandomRecommendCountDto(recommendService.showLeftRandomCount(findMember));
         return Response.success(leftRandomRecommendCountDto);
+    }
+
+    private Member getMember() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        return memberRepository.findMemberByUsername(username).orElseThrow(MemberNotFoundException::new);
     }
 
 }

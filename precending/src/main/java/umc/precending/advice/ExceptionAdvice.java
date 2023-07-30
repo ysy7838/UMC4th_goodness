@@ -86,11 +86,6 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.CONFLICT)
     public Response CannotChangeableRecommendException(){return Response.failure(409,"당신은 기회가 없습니다.");}
 
-    @ExceptionHandler(MemberNotLoginException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public Response MemberNotLoginException(){
-        return Response.failure(409,"로그인이 되어있지 않습니다");
-    }
 
     @ExceptionHandler(MemberWrongTypeException.class)
     @ResponseStatus(HttpStatus.CONFLICT)

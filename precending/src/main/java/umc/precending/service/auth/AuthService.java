@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umc.precending.config.jwt.TokenProvider;
+import umc.precending.domain.Recommend.Recommend;
 import umc.precending.domain.member.*;
 import umc.precending.dto.auth.*;
 import umc.precending.dto.token.TokenDto;
@@ -16,6 +17,7 @@ import umc.precending.dto.token.TokenResponseDto;
 import umc.precending.exception.member.MemberDuplicateException;
 import umc.precending.exception.member.MemberLoginFailureException;
 import umc.precending.exception.member.MemberNotFoundException;
+import umc.precending.repository.recommendRepository.RecommendRepository;
 import umc.precending.repository.member.*;
 import umc.precending.service.redis.RedisService;
 

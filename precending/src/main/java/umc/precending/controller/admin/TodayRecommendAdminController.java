@@ -6,28 +6,26 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import umc.precending.domain.member.Recommend;
-import umc.precending.dto.admin.NewGoodnessDto;
-import umc.precending.repository.member.RecommendRepository;
+import umc.precending.domain.Recommend.Recommend;
+import umc.precending.dto.admin.RecommendCreateDto;
+import umc.precending.repository.recommendRepository.RecommendRepository;
 import umc.precending.service.Member.MemberGroupService;
+import umc.precending.service.recommend.RecommendService;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/recommend_good")
 public class TodayRecommendAdminController {
 
-    private final MemberGroupService memberService;
-    private final RecommendRepository recommendRepository;
+    private final RecommendService recommendService;
 
-
-    @Transactional
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "추천 선행 저장", notes = "추천 선행 저장을 위한 로직")
-    @ApiImplicitParam(name = "newGoodnessDto", value = "관리자는 추천 선행 저장을 위해 선행을 입력해주세요")
-    public void saveGood(@RequestBody NewGoodnessDto newGoodnessDto){
-        Recommend recommend=new Recommend(newGoodnessDto.getGood());
-        recommendRepository.save(recommend);
+    @ApiOperation(value = "타입을 가진 recommend 생성", notes = "recommend 생성하는 로직")
+    public void makeRecommendPost(@ModelAttribute @Valid RecommendCreateDto createDto) {
+        recommendService.makeRecommend(createDto);
     }
 
 

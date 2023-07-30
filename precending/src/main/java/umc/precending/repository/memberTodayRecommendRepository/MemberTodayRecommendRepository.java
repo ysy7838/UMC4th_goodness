@@ -1,8 +1,8 @@
-package umc.precending.repository.member;
+package umc.precending.repository.memberTodayRecommendRepository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import umc.precending.domain.member.MemberTodayRecommend;
+import umc.precending.domain.Recommend.MemberTodayRecommend;
 
 import java.util.List;
 

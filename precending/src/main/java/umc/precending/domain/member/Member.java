@@ -1,6 +1,8 @@
 package umc.precending.domain.member;
 
 import lombok.*;
+import umc.precending.domain.Recommend.MemberTodayRecommend;
+import umc.precending.domain.Recommend.Recommend;
 import umc.precending.domain.base.BaseEntity;
 import umc.precending.domain.image.MemberImage;
 

@@ -1,10 +1,11 @@
-package umc.precending.domain.member;
+package umc.precending.domain.Recommend;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import umc.precending.domain.base.BaseEntity;
+import umc.precending.domain.member.Member;
 
 import javax.persistence.*;
 

@@ -41,6 +41,12 @@ public class RecommendService {
         memberTodayRecommendRepository.deleteAll();
         memberRepository.findAll().forEach(m->m.setMyTodayRecommendList(recommendRepository.selectRandom()));
     }
+    //매일 오전 8시에 남은 랜덤 추천 기회는 0이 되게 합니다.
+    @Scheduled(cron= "0 0 8 * * *")
+    @Transactional
+    public void changeAllMemberToNotChangeableRecommend(){
+        memberRepository.findAll().forEach(m->m.makeNotChangeableRecommend());
+    }
 
     //추천 선행을 바꿀 수 있는 상태로 변경합니다. 추후 인스타그램이나 광고 시청을 하고 이 로직을 호출하기 하면 될 듯
 

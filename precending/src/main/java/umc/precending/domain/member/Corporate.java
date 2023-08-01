@@ -16,6 +16,16 @@ public class Corporate extends Member {
     @Column(name = "registrationNumber", nullable = false, unique = true)
     private String registrationNumber; // 사업자 등록 번호
 
+    @Column(name="score",nullable=false)
+    private int score;//추가했다
+
+    public void addScore(int score){
+        this.score+=score;
+    }
+    public void resetScore(){
+        this.score=0;
+    }
+
     public Corporate(String name, String birth, String password,
                      String email, String registrationNumber) {
         this.name = name;
@@ -27,5 +37,10 @@ public class Corporate extends Member {
         this.introduction = "";
         this.registrationNumber = registrationNumber;
         this.authority = Authority.ROLE_CORPORATE;
+        this.score=0;
+        this.CofRC=0;
+        this.changeRecommend=false;
     }
+
+
 }

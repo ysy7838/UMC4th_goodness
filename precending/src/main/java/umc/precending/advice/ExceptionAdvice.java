@@ -5,6 +5,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import umc.precending.exception.RecommendGoodness.CannotChangeableRecommendException;
+import umc.precending.exception.email.AuthNumNotCorrectException;
+import umc.precending.exception.member.*;
+import umc.precending.exception.person.PersonAddClubException;
+import umc.precending.exception.person.PersonAddCorporateException;
 import umc.precending.exception.category.CategoryDuplicateException;
 import umc.precending.exception.category.CategoryNotFoundException;
 import umc.precending.exception.email.AuthNumNotCorrectException;
@@ -64,6 +69,31 @@ public class ExceptionAdvice {
         return Response.failure(400,"인증 번호가 일치하지 않습니다");
     }
 
+
+    @ExceptionHandler(PersonAddCorporateException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response MemberAddCorporateException(){
+        return Response.failure(409,"이미 이 기업을 추천하셨습니다");
+    }
+
+    @ExceptionHandler(PersonAddClubException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response MemberAddClubException(){
+        return Response.failure(409,"이미 이 동아리를 추천하셨습니다");
+    }
+
+    @ExceptionHandler(CannotChangeableRecommendException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response CannotChangeableRecommendException(){return Response.failure(409,"당신은 기회가 없습니다.");}
+
+
+    @ExceptionHandler(MemberWrongTypeException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response MemberWrongTypeException(){
+        return Response.failure(409,"club,corporate가 헷갈리신것 같습니다");
+    }
+
+
     @ExceptionHandler(CategoryDuplicateException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public Response categoryDuplicateException() {
@@ -99,4 +129,5 @@ public class ExceptionAdvice {
     public Response postNewsNotSupportedException(PostNewsNotSupportedException e) {
         return Response.failure(400, e.getMessage());
     }
+
 }

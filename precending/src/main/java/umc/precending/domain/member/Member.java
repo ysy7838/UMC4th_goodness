@@ -1,6 +1,7 @@
 package umc.precending.domain.member;
 
 import lombok.*;
+import umc.precending.domain.Recommend.MemberSaveRecommend;
 import umc.precending.domain.Recommend.MemberTodayRecommend;
 import umc.precending.domain.Recommend.Recommend;
 import umc.precending.domain.base.BaseEntity;
@@ -77,6 +78,21 @@ public abstract class Member extends BaseEntity {
             memberTodayRecommends.add(memberTodayRecommend);
             memberTodayRecommend.setMember(this);
         }
+    }
+
+    public void addMyTodayRecommend(Recommend recommend){
+        MemberTodayRecommend memberTodayRecommend=MemberTodayRecommend.createMemberTodayRecommend(recommend);
+        memberTodayRecommends.add(memberTodayRecommend);
+        memberTodayRecommend.setMember(this);
+    }
+
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+    private List<MemberSaveRecommend> memberSaveRecommends=new ArrayList<>();
+
+    public void addMemberSaveRecommend(Recommend recommend){
+        MemberSaveRecommend memberSaveRecommend= MemberSaveRecommend.createMemberSaveRecommend(recommend);
+        memberSaveRecommends.add(memberSaveRecommend);
+        memberSaveRecommend.setMember(this);
     }
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "member", orphanRemoval = true)

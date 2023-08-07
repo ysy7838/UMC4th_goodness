@@ -13,5 +13,5 @@ public interface MemberTodayRecommendRepository extends JpaRepository<MemberToda
     @Query("select mtr from MemberTodayRecommend mtr join fetch mtr.member m join fetch mtr.recommend r where m.username=:username")
     List<MemberTodayRecommend> findByMemberName(String username);
 
-
+    void deleteById(Long id);
 }

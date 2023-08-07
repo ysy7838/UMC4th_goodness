@@ -33,6 +33,14 @@ public class RecommendController {
         return Response.success(singleRecommendShowDto);
     }
 
+    @PatchMapping("/save/Recommend/{num}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value="나의 추천 선행목록을 저장합니다.",notes = "나의 추천 선행 목록을 저장하는 로직")
+    public void saveRecommend(@PathVariable int num){
+        Member findMember=getMember();
+        recommendService.RecommendSave(findMember,num);
+    }
+
 
     @PatchMapping("/change/MyRecommend")
     @ResponseStatus(HttpStatus.OK)

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import umc.precending.exception.RecommendGoodness.CannotChangeableRecommendException;
+import umc.precending.exception.RecommendGoodness.RecommendNullException;
 import umc.precending.exception.email.AuthNumNotCorrectException;
 import umc.precending.exception.member.*;
 import umc.precending.exception.person.PersonAddClubException;
@@ -128,6 +129,12 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response postNewsNotSupportedException(PostNewsNotSupportedException e) {
         return Response.failure(400, e.getMessage());
+    }
+
+    @ExceptionHandler(RecommendNullException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response recommendNullException(){
+        return Response.failure(400,"대부분의 추천 선행 저장으로 인해 보여줄 것이 없습니다");
     }
 
 }

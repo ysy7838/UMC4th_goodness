@@ -1,0 +1,55 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.13'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'umc'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = "15"
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.445'
+	implementation 'org.seleniumhq.selenium:selenium-java:4.1.2'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	implementation 'javax.mail:mail:1.4.7'
+	// Spring Context Support
+	implementation 'org.springframework:spring-context-support:5.3.9'
+
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+	// JSON
+	implementation 'org.json:json:20230227'
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+targetCompatibility = JavaVersion.VERSION_15

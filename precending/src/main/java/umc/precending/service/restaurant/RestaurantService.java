@@ -31,7 +31,7 @@ public class RestaurantService {
             for (int i=0; i<10; i++) {
                 Restaurant restaurant = new Restaurant();
                 rs.next();
-                restaurant.setRestaurant(rs.getInt("num"), rs.getString("name"), rs.getString("adres"), rs.getString("category"), rs.getString("time"));
+                restaurant.setRestaurantPoint(rs.getInt("num"), rs.getString("name"), rs.getString("adres"), rs.getString("category"), rs.getString("time"), rs.getString("lat"), rs.getString("lon"));
                 restaurantList.add(restaurant);
             }
 
@@ -67,4 +67,32 @@ public class RestaurantService {
 
         return restaurant;
     }
+
+    public LinkedList<Restaurant> setRestaurantMapList() {
+        LinkedList<Restaurant> restaurantList = new LinkedList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+
+            conn = dataSource.getConnection();
+            pstmt = conn.prepareStatement("SELECT DISTINCT * FROM rest");
+            rs = pstmt.executeQuery();
+
+            while (!rs.isLast()) {
+                Restaurant restaurant = new Restaurant();
+                rs.next();
+                restaurant.setRestaurantPoint(rs.getInt("num"), rs.getString("name"), rs.getString("adres"), rs.getString("category"), rs.getString("time"), rs.getString("lat"), rs.getString("lon"));
+                restaurantList.add(restaurant);
+            }
+
+            rs.close();
+            pstmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return restaurantList;
+    }
+
 }

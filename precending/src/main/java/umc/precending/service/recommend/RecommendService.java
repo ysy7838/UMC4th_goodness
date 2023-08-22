@@ -1,17 +1,15 @@
 package umc.precending.service.recommend;
 
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import umc.precending.domain.Recommend.MemberTodayRecommend;
+import umc.precending.domain.Recommend.PersonTodayRecommend;
 import umc.precending.domain.Recommend.Recommend;
 import umc.precending.domain.category.Category;
 import umc.precending.domain.category.RecommendCategory;
 import umc.precending.domain.member.Member;
+import umc.precending.domain.member.Person;
 import umc.precending.dto.Recommend.SingleRecommendShowDto;
 import umc.precending.dto.admin.RecommendCreateDto;
 import umc.precending.exception.RecommendGoodness.CannotChangeableRecommendException;
@@ -19,7 +17,8 @@ import umc.precending.exception.RecommendGoodness.RecommendNullException;
 import umc.precending.exception.category.CategoryNotFoundException;
 import umc.precending.repository.category.CategoryRepository;
 import umc.precending.repository.member.MemberRepository;
-import umc.precending.repository.memberTodayRecommendRepository.MemberTodayRecommendRepository;
+import umc.precending.repository.member.PersonRepository;
+import umc.precending.repository.personTodayRecommendRepository.PersonTodayRecommendRepository;
 import umc.precending.repository.recommendRepository.RecommendRepository;
 
 import java.util.List;
@@ -32,32 +31,32 @@ import java.util.stream.IntStream;
 public class RecommendService {
     private final RecommendRepository recommendRepository;
     private final CategoryRepository categoryRepository;
-    private final MemberTodayRecommendRepository memberTodayRecommendRepository;
-    private final MemberRepository memberRepository;
+    private final PersonTodayRecommendRepository personTodayRecommendRepository;
+    private final PersonRepository personRepository;
 
     //매일 오전 8시에는 각 사용자의 추천선행이 바뀌는 로직
     @Scheduled(cron = "0 0 8 * * *")
     @Transactional
-    public void changeAllMemberRecommend(){
-        memberTodayRecommendRepository.deleteAll();
-        memberRepository.findAll().forEach(m->m.setMyTodayRecommendList(recommendRepository.selectRandomByMember(m.getId())));
+    public void changeAllPersonRecommend(){
+        personTodayRecommendRepository.deleteAll();
+        personRepository.findAll().forEach(p->p.setMyTodayRecommendList(recommendRepository.selectRandomByPerson(p.getId())));
     }
     //매일 오전 8시에 남은 랜덤 추천 기회는 0이 되게 합니다.
     @Scheduled(cron= "0 0 8 * * *")
     @Transactional
-    public void changeAllMemberToNotChangeableRecommend(){
-        memberRepository.findAll().forEach(m->m.makeNotChangeableRecommend());
+    public void changeAllPersonToNotChangeableRecommend(){
+        personRepository.findAll().forEach(p->p.makeNotChangeableRecommend());
     }
 
     //추천 선행을 바꿀 수 있는 상태로 변경합니다. 추후 인스타그램이나 광고 시청을 하고 이 로직을 호출하기 하면 될 듯
 
     @Transactional
-    public void makeChangeableRecommendation(Member member){
-        member.makeChangeableRecommend();
+    public void makeChangeableRecommendation(Person person){
+        person.makeChangeableRecommend();
     }
 //추천 선행을 바꿀수 있는 기회를 보여주는 로직
-    public int showLeftRandomCount(Member member){
-        if( !member.isChangeRecommend()){
+    public int showLeftRandomCount(Person person){
+        if( !person.isChangeRecommend()){
             return 0;
         }
         else{
@@ -66,7 +65,7 @@ public class RecommendService {
     }
     //나의 추천선행을 변경하는 로직
     @Transactional
-    public void changeMyRecommendAll(Member member){
+    public void changeMyRecommendAll(Person person){
        /* Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         String username= authentication.getName();
         Member member=memberRepository.findMemberByUsername(username).get();
@@ -75,23 +74,23 @@ public class RecommendService {
             memberTodayRecommendRepository.deleteById(memberTodayRecommend.getId());
         }
         member.setMyTodayRecommendList(recommendRepository.selectRandom());*/
-        if(member.isChangeRecommend()){
-            List<Recommend> recommends=recommendRepository.selectRandomByMember(member.getId());
-            List<MemberTodayRecommend> oldRecommends=memberTodayRecommendRepository.findByMemberName(member.getUsername());
+        if(person.isChangeRecommend()){
+            List<Recommend> recommends=recommendRepository.selectRandomByPerson(person.getId());
+            List<PersonTodayRecommend> oldRecommends= personTodayRecommendRepository.findByPersonName(person.getUsername());
             int minSize=Math.min(oldRecommends.size(),recommends.size());
             for(int i=0;i<minSize;i++){
                 oldRecommends.get(i).setRecommend(recommends.get(i));
             }
             for(int i=oldRecommends.size();i<recommends.size();i++){
-                member.addMyTodayRecommend(recommends.get(i));
+                person.addMyTodayRecommend(recommends.get(i));
             }
             if(recommends.size()< oldRecommends.size()){
                 for(int i=recommends.size();i< oldRecommends.size();i++){
                     // oldRecommends.get(i).setRecommend(null);
-                    memberTodayRecommendRepository.deleteById(oldRecommends.get(i).getId());
+                    personTodayRecommendRepository.deleteById(oldRecommends.get(i).getId());
                 }
             }
-            member.makeNotChangeableRecommend();
+            person.makeNotChangeableRecommend();
         }
         else{
             throw new CannotChangeableRecommendException();
@@ -101,18 +100,18 @@ public class RecommendService {
 
    //사용자의 추천 선행을 하나 보여주고 사용자가 열어본 점수를 더하는 로직
    @Transactional
-    public SingleRecommendShowDto recommendSingleShowDto(int num,Member member){
-       List<MemberTodayRecommend> memberTodayRecommends=memberTodayRecommendRepository.findByMemberName(member.getUsername());
-       if(memberTodayRecommends.size()<=num){
+    public SingleRecommendShowDto recommendSingleShowDto(int num,Person person){
+       List<PersonTodayRecommend> personTodayRecommends = personTodayRecommendRepository.findByPersonName(person.getUsername());
+       if(personTodayRecommends.size()<=num){
            throw new RecommendNullException();
        }
       /*  if(memberTodayRecommends.get(num).getRecommend()==null){
            throw new RecommendNullException();
         }*/
        SingleRecommendShowDto singleRecommendShowDto=new SingleRecommendShowDto();
-       singleRecommendShowDto.setGoodness(memberTodayRecommends.get(num).getRecommend().getGoodness());
-       singleRecommendShowDto.setCategories(memberTodayRecommends.get(num).getRecommend().getRecommendCategories().stream().map(value->value.getCategory().getCategoryName()).collect(Collectors.toList()));
-       member.addCofRc();
+       singleRecommendShowDto.setGoodness(personTodayRecommends.get(num).getRecommend().getGoodness());
+       singleRecommendShowDto.setCategories(personTodayRecommends.get(num).getRecommend().getRecommendCategories().stream().map(value->value.getCategory().getCategoryName()).collect(Collectors.toList()));
+       person.addCofRc();
        return singleRecommendShowDto;
     }
     //추천 선행 만들기
@@ -151,10 +150,10 @@ public class RecommendService {
     }
     //추천된 선행을 했으면 저장하는 로직.
     @Transactional
-    public void RecommendSave(Member member,int num){
-        List<MemberTodayRecommend> memberTodayRecommends=memberTodayRecommendRepository.findByMemberName(member.getUsername());
-        Recommend recommend=memberTodayRecommends.get(num).getRecommend();
-        member.addMemberSaveRecommend(recommend);
+    public void RecommendSave(Person person,int num){
+        List<PersonTodayRecommend> personTodayRecommends = personTodayRecommendRepository.findByPersonName(person.getUsername());
+        Recommend recommend= personTodayRecommends.get(num).getRecommend();
+        person.addPersonSaveRecommend(recommend);
     }
 
 }

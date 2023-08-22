@@ -11,7 +11,7 @@ public interface RecommendRepository extends JpaRepository<Recommend,Long> {
     @Query(value = "select * from recommend order by RAND() limit 3",nativeQuery = true)
     List<Recommend> selectRandom();
 
-    @Query(value = "select * from recommend r left outer join member_save_recommend msr on msr.recommend_id=r.id and msr.member_id=:memberId where msr.id IS NULL order by RAND() limit 3",nativeQuery = true)
-    List<Recommend> selectRandomByMember(@Param("memberId") Long memberId);
+    @Query(value = "select * from recommend r left outer join person_save_recommend psr on psr.recommend_id=r.id and psr.person_id=:personId where psr.id IS NULL order by RAND() limit 3",nativeQuery = true)
+    List<Recommend> selectRandomByPerson(@Param("personId") Long personId);
 
 }

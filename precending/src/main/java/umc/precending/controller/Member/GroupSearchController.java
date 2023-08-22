@@ -1,4 +1,4 @@
-package umc.precending.controller.Member;
+package umc.precending.controller.member;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ import umc.precending.domain.member.Member;
 import umc.precending.exception.member.MemberNotFoundException;
 import umc.precending.repository.member.MemberRepository;
 import umc.precending.response.Response;
-import umc.precending.response.TwoResponse;
 import umc.precending.service.Member.MemberSearchService;
 
 import java.util.Optional;
@@ -43,14 +42,16 @@ public class GroupSearchController {
     public Response showCorporate(@RequestParam String keyword,@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "5")int size){
         return Response.success(memberSearchService.corporateListShow(keyword,page,size));
     }
-    @GetMapping("/show/search/group")
+    @PostMapping("/save/search")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value="검색한 group 결과 반환하며 로그인 시 최근검색어 저장",notes = "검색된 group 출력하는 로직")
-    public TwoResponse showGroup(@RequestParam String keyword, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5")int size){
+    @ApiOperation(value="최근 검색한 검색어 저장하기",notes = "최근 검색어 저장하는 로직")
+    public void saveSearch(@RequestParam String keyword){
         if(getMember().isPresent()){
             memberSearchService.postKeyword(getMember().get(),keyword);
         }
-        return TwoResponse.success(memberSearchService.clubListShow(keyword,page,size),memberSearchService.corporateListShow(keyword,page,size));
+        else{
+            throw new MemberNotFoundException();
+        }
     }
 
     @GetMapping("/show/recent/search")
@@ -63,7 +64,7 @@ public class GroupSearchController {
         return Response.success(memberSearchService.getSearchList(getMember().get()));
     }
 
-    @PostMapping("/delete/recent/search")
+    @DeleteMapping("/delete/recent/search")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value="최근 검색어 삭제하기",notes = "최근 검색어 삭제하는 로직")
     public void deleteRecentSearch(String value){

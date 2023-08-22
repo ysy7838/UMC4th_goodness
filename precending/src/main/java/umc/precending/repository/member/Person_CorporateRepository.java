@@ -18,5 +18,7 @@ public interface Person_CorporateRepository extends JpaRepository<Person_Corpora
     @Query("select pc from Person_Corporate pc join fetch pc.corporate where pc.person.id=:personId ORDER BY pc.corporate.name")
     List<Person_Corporate> findTop5ByPersonIdOrderByCorporateName(@Param("personId") Long personId,Pageable pageable);
 
+    void deleteByPerson_IdAndCorporate_Id(Long personId,Long corporateId);
+
 }
 

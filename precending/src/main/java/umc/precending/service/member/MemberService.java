@@ -1,4 +1,4 @@
-package umc.precending.service.member;
+package umc.precending.service.Member;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

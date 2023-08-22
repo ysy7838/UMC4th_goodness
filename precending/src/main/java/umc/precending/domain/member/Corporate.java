@@ -22,6 +22,8 @@ public class Corporate extends Member {
     public void addScore(int score){
         this.score+=score;
     }
+
+    public void cancelScore(int score){this.score-=score;}
     public void resetScore(){
         this.score=0;
     }
@@ -38,8 +40,6 @@ public class Corporate extends Member {
         this.registrationNumber = registrationNumber;
         this.authority = Authority.ROLE_CORPORATE;
         this.score=0;
-        this.CofRC=0;
-        this.changeRecommend=false;
     }
 
 

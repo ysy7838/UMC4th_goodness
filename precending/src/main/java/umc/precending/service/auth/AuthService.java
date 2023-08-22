@@ -50,7 +50,6 @@ public class AuthService {
     public void signUp(MemberClubSignUpDto signUpDto) {
         Club clubMember = getClubMember(signUpDto);
         List<Recommend> recommends=recommendRepository.selectRandom();
-        clubMember.setMyTodayRecommendList(recommends);
         memberRepository.save(clubMember);
     }
 
@@ -59,7 +58,6 @@ public class AuthService {
     public void signUp(MemberCorporateSignUpDto signUpDto) {
         Corporate corporateMember = getCorporateMember(signUpDto);
         List<Recommend> recommends=recommendRepository.selectRandom();
-        corporateMember.setMyTodayRecommendList(recommends);
         memberRepository.save(corporateMember);
     }
 

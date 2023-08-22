@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import umc.precending.domain.member.Member;
+import umc.precending.domain.member.Person;
 
 import javax.persistence.*;
 
@@ -13,22 +14,22 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class MemberSaveRecommend {
+public class PersonSaveRecommend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_ID")
-    private Member member;
+    @JoinColumn(name = "person_ID")
+    private Person person;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Recommend_ID")
     private Recommend recommend;
 
-    public static MemberSaveRecommend createMemberSaveRecommend(Recommend recommend){
-        MemberSaveRecommend membersaveRecommend=new MemberSaveRecommend();
-        membersaveRecommend.setRecommend(recommend);
-        return membersaveRecommend;
+    public static PersonSaveRecommend createPersonSaveRecommend(Recommend recommend){
+        PersonSaveRecommend personSaveRecommend=new PersonSaveRecommend();
+        personSaveRecommend.setRecommend(recommend);
+        return personSaveRecommend;
     }
 }

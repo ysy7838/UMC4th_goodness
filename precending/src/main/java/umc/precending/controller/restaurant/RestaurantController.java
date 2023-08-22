@@ -17,7 +17,7 @@ import java.util.List;
 public class RestaurantController {
     private final RestaurantService restaurantService;
 
-    @GetMapping("/profile/restaurant")
+    @GetMapping("/main_home/restaurant")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value="가게 목록", notes = "홈화면에 노출될 가게 목록")
     public List<Restaurant> searchResult() {
@@ -25,10 +25,18 @@ public class RestaurantController {
         return restList;
     }
 
-    @GetMapping("/profile/restaurant/info")
+    @GetMapping("/main_home/restaurant/info")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value="가게 정보", notes = "노출된 가게를 클릭했을 때 나타나는 가게의 정보")
     public Restaurant restaurantInfo(@RequestParam String name) {
         return restaurantService.getRestrauntInfo(name);
     }
+
+    @GetMapping("/map_home")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value="가게 정보", notes = "노출된 가게를 클릭했을 때 나타나는 가게의 정보")
+    public List<Restaurant> mapResult() {
+        List<Restaurant> restList = restaurantService.setRestaurantMapList();
+        return restList;    }
+
 }

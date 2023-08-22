@@ -13,15 +13,19 @@ public class Restaurant {
     private String adres;
     private String cat;
     private String time;
+    private String lat;
+    private String lon;
 
     public Restaurant() {}
 
-    public Restaurant(int rNum, String name, String adres, String cat, String time) {
+    public Restaurant(int rNum, String name, String adres, String cat, String time, String lon, String lat) {
         this.rNum = rNum;
         this.name = name;
         this.adres = adres;
         this.cat = cat;
         this.time = time;
+        this.lon = lon;
+        this.lat = lat;
     }
 
     public void setRestaurant(int rNum, String name, String adres, String cat, String time) {
@@ -30,7 +34,16 @@ public class Restaurant {
         this.adres = adres;
         this.cat = cat;
         this.time = time;
+    }
 
+    public void setRestaurantPoint(int rNum, String name, String adres, String cat, String time, String lat, String lon) {
+        this.rNum = rNum;
+        this.name = name;
+        this.adres = adres;
+        this.cat = cat;
+        this.time = time;
+        this.lat = lat;
+        this.lon = lon;
     }
 
     public void setName(String name) {

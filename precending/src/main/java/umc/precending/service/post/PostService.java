@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import umc.precending.domain.Post.NewsPost;
 import umc.precending.domain.Post.NormalPost;
 import umc.precending.domain.Post.Post;
+import umc.precending.domain.Post.RecommendPost;
 import umc.precending.domain.category.Category;
 import umc.precending.domain.category.PostCategory;
 import umc.precending.domain.image.PostImage;
@@ -122,6 +123,10 @@ public class PostService {
         addCategories(createDto, categories);
 
         postRepository.save(post);
+    }
+
+    public void makeRecommendPost(RecommendPost recommendPost){
+        postRepository.save(recommendPost);
     }
 
     // 선행 기록 수정

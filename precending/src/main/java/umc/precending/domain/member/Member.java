@@ -1,8 +1,6 @@
 package umc.precending.domain.member;
 
 import lombok.*;
-import umc.precending.domain.Recommend.MemberTodayRecommend;
-import umc.precending.domain.Recommend.Recommend;
 import umc.precending.domain.base.BaseEntity;
 import umc.precending.domain.image.MemberImage;
 
@@ -49,35 +47,6 @@ public abstract class Member extends BaseEntity {
     protected Authority authority; // 사용자가 어떠한 회원인지를 명시(ex) 개인 회원, 동아리 회원, 기업 회원 등)
 
 
-    @Column(name="CofRC",nullable = false)
-    protected int CofRC;
-
-    public void addCofRc(){
-       CofRC++;
-    }
-
-
-    @Column(name = "changeRecommend",nullable = false)
-    protected boolean changeRecommend;
-
-    public void makeChangeableRecommend(){
-        this.changeRecommend=true;
-    }
-    public void makeNotChangeableRecommend(){
-        this.changeRecommend=false;
-    }
-
-    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
-    private List<MemberTodayRecommend> memberTodayRecommends=new ArrayList<>();
-
-    public void setMyTodayRecommendList(List<Recommend> recommends){
-        memberTodayRecommends.clear();
-        for (Recommend recommend : recommends) {
-            MemberTodayRecommend memberTodayRecommend= MemberTodayRecommend.createMemberTodayRecommend(recommend);
-            memberTodayRecommends.add(memberTodayRecommend);
-            memberTodayRecommend.setMember(this);
-        }
-    }
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "member", orphanRemoval = true)
     protected List<MemberImage> images = new ArrayList<>();

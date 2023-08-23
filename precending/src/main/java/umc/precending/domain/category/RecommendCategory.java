@@ -21,7 +21,7 @@ public class RecommendCategory {
     @JoinColumn(name = "recommend_id")
     private Recommend recommend;
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 

@@ -50,4 +50,9 @@ public class PostCategory {
         this.category = category;
         this.count = 0.0;
     }
+
+    public PostCategory(RecommendCategory recommendCategory){
+        this.category=recommendCategory.getCategory();
+        this.count=0.0;
+    }
 }

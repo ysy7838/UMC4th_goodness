@@ -1,18 +1,17 @@
 package umc.precending.service.Member;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import umc.precending.domain.Recommend.MemberTodayRecommend;
-import umc.precending.domain.Recommend.Recommend;
 import umc.precending.domain.member.*;
+import umc.precending.dto.member.GroupShowDto;
 import umc.precending.dto.person.NameScoreClubDto;
 import umc.precending.dto.person.NameScoreCorporateDto;
-import umc.precending.exception.RecommendGoodness.CannotChangeableRecommendException;
-import umc.precending.repository.memberTodayRecommendRepository.MemberTodayRecommendRepository;
+import umc.precending.exception.member.MemberNotFoundException;
+import umc.precending.repository.personTodayRecommendRepository.PersonTodayRecommendRepository;
 import umc.precending.repository.recommendRepository.RecommendRepository;
 import umc.precending.repository.member.*;
 
@@ -25,7 +24,7 @@ import java.util.stream.Collectors;
 public class MemberGroupService {
     private final MemberRepository memberRepository;
     private final RecommendRepository recommendRepository;
-    private final MemberTodayRecommendRepository memberTodayRecommendRepository;
+    private final PersonTodayRecommendRepository personTodayRecommendRepository;
     private final CorporateRepository corporateRepository;
     private final ClubRepository clubRepository;
     private final Person_ClubRepository personClubRepository;
@@ -53,5 +52,24 @@ public class MemberGroupService {
         corporateRepository.findAll().forEach(c->c.resetScore());
         personClubRepository.deleteAll();
         personCorporateRepository.deleteAll();
+    }
+     //랜덤으로 기업 하나를 보여준다
+    public GroupShowDto corporateShowRandom(){
+        Pageable pageable= PageRequest.of(0,1);
+        List<Corporate> corporates =corporateRepository.findOneByRandom(pageable);
+        if(corporates.isEmpty()){
+            throw new MemberNotFoundException();
+        }
+        return new GroupShowDto(corporates.get(0));
+    }
+
+    //랜덤으로 동아리 하나를 보여준다.
+    public GroupShowDto clubShowRandom(){
+        Pageable pageable=PageRequest.of(0,1);
+        List<Club> clubs=clubRepository.findOneByRandom(pageable);
+        if(clubs.isEmpty()){
+            throw new MemberNotFoundException();
+        }
+        return new GroupShowDto(clubs.get(0));
     }
 }

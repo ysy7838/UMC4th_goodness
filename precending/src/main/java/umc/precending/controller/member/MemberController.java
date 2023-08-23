@@ -1,4 +1,4 @@
-package umc.precending.controller.member;
+package umc.precending.controller.Member;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import umc.precending.domain.member.Member;
 import umc.precending.exception.member.MemberNotFoundException;
 import umc.precending.repository.member.MemberRepository;
-import umc.precending.service.member.MemberService;
+import umc.precending.service.Member.MemberService;
 
 @RestController
 @RequiredArgsConstructor

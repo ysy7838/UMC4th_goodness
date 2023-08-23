@@ -1,6 +1,7 @@
 package umc.precending.repository.recommendRepository;
 
 import io.lettuce.core.dynamic.annotation.Param;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import umc.precending.domain.Recommend.Recommend;
@@ -11,7 +12,10 @@ public interface RecommendRepository extends JpaRepository<Recommend,Long> {
     @Query(value = "select * from recommend order by RAND() limit 3",nativeQuery = true)
     List<Recommend> selectRandom();
 
-    @Query(value = "select * from recommend r left outer join person_save_recommend psr on psr.recommend_id=r.id and psr.person_id=:personId where psr.id IS NULL order by RAND() limit 3",nativeQuery = true)
-    List<Recommend> selectRandomByPerson(@Param("personId") Long personId);
+    @Query("select count(r) From Recommend r left join RecommendPost rp on rp.recommend= r and rp.writer=:writer where rp.id IS NULL")
+    Long countByRecommendPostAndPerson(String writer);
+
+    @Query("select r from Recommend r Left join RecommendPost rp on rp.recommend= r and rp.writer=:writer where rp.id is NULL")
+    List<Recommend> selectRandomByPerson(String writer, Pageable pageable);
 
 }

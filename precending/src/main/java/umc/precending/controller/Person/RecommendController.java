@@ -43,6 +43,14 @@ public class RecommendController {
         recommendService.RecommendSave(findPerson,num);
     }
 
+    @DeleteMapping("/cancel/Recommend/{num}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation(value="나의 추천 선행목록을 저장한 것을 바로 취소합니다.",notes = "나의 추천 선행 목록을 취소하는 로직")
+    public void cancelSaveRecommend(@PathVariable int num){
+        Person findPerson=getPerson();
+        recommendService.cancelSaveRecommend(findPerson,num);
+    }
+
 
     @PatchMapping("/change/MyRecommend")
     @ResponseStatus(HttpStatus.OK)
@@ -75,6 +83,13 @@ public class RecommendController {
         String username = authentication.getName();
 
         return personRepository.findPersonByUsername(username).orElseThrow(MemberNotFoundException::new);
+    }
+
+    @PostMapping("/test")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value="매일 8시가 되면 모든 사람의 추천 선행이 바뀌는데 그걸 해볼수 있는 테스트입니다",notes = "테스트로직")
+    public void test(){
+        recommendService.changeAllPersonRecommendTest();
     }
 
 }

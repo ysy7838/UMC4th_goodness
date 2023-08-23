@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import umc.precending.domain.Recommend.PersonSaveRecommend;
 import umc.precending.domain.Recommend.PersonTodayRecommend;
 import umc.precending.domain.Recommend.Recommend;
 
@@ -66,14 +65,6 @@ public class Person extends Member{
         personTodayRecommend.setPerson(this);
     }
 
-    @OneToMany(mappedBy = "person",cascade = CascadeType.ALL)
-    private List<PersonSaveRecommend> personSaveRecommends =new ArrayList<>();
-
-    public void addPersonSaveRecommend(Recommend recommend){
-        PersonSaveRecommend personSaveRecommend = PersonSaveRecommend.createPersonSaveRecommend(recommend);
-        personSaveRecommends.add(personSaveRecommend);
-        personSaveRecommend.setPerson(this);
-    }
 
     //내가 추가한 것:연관관계 편의 메서드
     public void addMyCorporate(Corporate corporate){

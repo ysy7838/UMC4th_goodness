@@ -10,7 +10,7 @@ public interface PersonTodayRecommendRepository extends JpaRepository<PersonToda
 
     List<PersonTodayRecommend> findByPerson_Id(Long id);
 
-    @Query("select ptr from PersonTodayRecommend ptr join fetch ptr.person p join fetch ptr.recommend r where p.username=:username")
+    @Query("select ptr from PersonTodayRecommend ptr join fetch ptr.person p join fetch ptr.recommend r where p.username=:username order by ptr.id")
     List<PersonTodayRecommend> findByPersonName(String username);
 
     void deleteById(Long id);

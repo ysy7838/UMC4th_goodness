@@ -81,4 +81,20 @@ public class MailService {
             throw new MemberDuplicateException();
         }
     }
+
+    //비밀번호 재설정 이메일
+    public void sendSetPasswordEmail(String email) throws MessagingException {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+        mimeMessageHelper.setFrom("ysy7838@naver.com");
+        mimeMessageHelper.setTo(email);
+        mimeMessageHelper.setSubject("Set Passowrd");
+        mimeMessageHelper.setText("""
+        <div>
+          <a href="http://localhost:8080/api/auth/set-password?email=%s" target="_blank">click link to set password</a>
+        </div>
+        """.formatted(email), true);
+
+        mailSender.send(mimeMessage);
+    }
 }

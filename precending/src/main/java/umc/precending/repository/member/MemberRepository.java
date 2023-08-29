@@ -13,6 +13,7 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findMemberByUsername(String username);
+    Optional<Member> findByEmail(String email);
 
     @Query("select m from Member m where (m.authority='ROLE_CORPORATE' or m.authority='ROLE_CLUB') and m.name LIKE %:keyword% "+
             "ORDER BY (length(:keyword)/length(m.name)) desc, CASE WHEN m.name LIKE :startsWithKeyword% THEN 1 Else 2 End,m.name")

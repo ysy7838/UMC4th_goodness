@@ -9,9 +9,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import umc.precending.domain.member.Member;
+import umc.precending.dto.person.MemberUpdateRequestDto;
 import umc.precending.exception.member.MemberNotFoundException;
 import umc.precending.repository.member.MemberRepository;
 import umc.precending.service.Member.MemberService;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,5 +39,23 @@ public class MemberController {
 
         return memberRepository.findMemberByUsername(authentication.getName())
                 .orElseThrow(MemberNotFoundException::new);
+    }
+
+    @PutMapping("/member/update")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "회원정보 수정", notes = "회원의 정보를 수정하는 로직")
+    @ApiImplicitParam(name = "request", value = "회원정보 수정을 위한 요청객체")
+    public void updateMember(@Valid @RequestBody MemberUpdateRequestDto request) {
+        Member member = getMember();
+        memberService.updateMember(member, request); // 현재 로그인하고 있는 계정 수정
+    }
+
+    @DeleteMapping("/member/delete-member")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "회원 탈퇴", notes = "회원 탈퇴를 진행하는 로직")
+    @ApiImplicitParam(name = "username", value = "탈퇴할 회원 이름")
+    public void deleteMember() {
+        Member member = getMember();
+        memberService.deleteMember(member); // 현재 로그인하고 있는 계정 탈퇴
     }
 }

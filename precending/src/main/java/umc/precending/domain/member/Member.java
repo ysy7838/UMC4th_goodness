@@ -3,6 +3,7 @@ package umc.precending.domain.member;
 import lombok.*;
 import umc.precending.domain.base.BaseEntity;
 import umc.precending.domain.image.MemberImage;
+import umc.precending.dto.person.MemberUpdateRequestDto;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -56,6 +57,16 @@ public abstract class Member extends BaseEntity {
             image.initMember(this);
             this.images.add(image);
         }
+    }
+
+    public void setPassword(String newPassword) {
+        this.password = newPassword; // 비밀번호 재설정
+    }
+
+    public void update(MemberUpdateRequestDto request) {
+        this.name = request.getName();
+        this.birth = request.getBirth();
+        this.introduction = request.getIntroduction(); // 프로필 정보 수정
     }
 }
 

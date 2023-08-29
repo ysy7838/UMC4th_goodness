@@ -19,8 +19,10 @@ import umc.precending.exception.member.MemberLoginFailureException;
 import umc.precending.exception.member.MemberNotFoundException;
 import umc.precending.repository.recommendRepository.RecommendRepository;
 import umc.precending.repository.member.*;
+import umc.precending.service.email.MailService;
 import umc.precending.service.redis.RedisService;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 @Service
@@ -35,6 +37,7 @@ public class AuthService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
     private final RecommendRepository recommendRepository;
+    private final MailService mailService;
 
     // 회원가입 - 개인
     @Transactional
@@ -128,5 +131,36 @@ public class AuthService {
 
         return new Corporate(signUpDto.getName(), signUpDto.getBirth(), passwordEncoder.encode(signUpDto.getPassword()),
                 signUpDto.getEmail(), signUpDto.getRegistrationNumber());
+    }
+
+    // 비밀번호 재설정 링크를 이메일로 보내기 위한 로직
+    public String forgotPassword(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(MemberNotFoundException::new);
+        try {
+            mailService.sendSetPasswordEmail(email);
+        } catch (MessagingException e) {
+            throw new RuntimeException("비밀번호 재설정 이메일을 보낼 수 없습니다. 다시 시도해주세요.");
+        }
+        return "please check your email to set new password to your account";
+    }
+
+    // 비밀번호 재설정 로직
+    public String setPassword(String email, String newPassword) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(MemberNotFoundException::new);
+        String encodePassword = passwordEncoder.encode(newPassword);
+        member.setPassword(encodePassword);
+        memberRepository.save(member);
+        return "New password set successfully login with new password";
+    }
+
+    // 탈퇴
+    @Transactional
+    public String deleteMember(String username) {
+        Member member = memberRepository.findMemberByUsername(username)
+                .orElseThrow(MemberNotFoundException::new);
+        memberRepository.delete(member);
+        return "회원 탈퇴가 완료되었습니다.";
     }
 }

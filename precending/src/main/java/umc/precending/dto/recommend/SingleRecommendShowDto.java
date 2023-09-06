@@ -1,4 +1,4 @@
-package umc.precending.dto.Recommend;
+package umc.precending.dto.recommend;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

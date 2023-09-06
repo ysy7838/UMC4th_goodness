@@ -5,7 +5,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import umc.precending.exception.RecommendGoodness.CannotChangeableRecommendException;
+import umc.precending.exception.recommendGoodness.CannotChangeableRecommendException;
 import umc.precending.exception.email.AuthNumNotCorrectException;
 import umc.precending.exception.member.*;
 import umc.precending.exception.person.PersonAddClubException;

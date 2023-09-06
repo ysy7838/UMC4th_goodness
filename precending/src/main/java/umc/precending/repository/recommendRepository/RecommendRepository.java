@@ -3,7 +3,7 @@ package umc.precending.repository.recommendRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import umc.precending.domain.Recommend.Recommend;
+import umc.precending.domain.recommend.Recommend;
 
 import java.util.List;
 

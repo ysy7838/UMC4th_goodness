@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.web.multipart.MultipartFile;
-import umc.precending.domain.Post.Post;
+import umc.precending.domain.post.Post;
 
 import javax.persistence.*;
 

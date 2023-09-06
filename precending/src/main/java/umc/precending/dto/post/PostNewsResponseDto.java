@@ -3,7 +3,7 @@ package umc.precending.dto.post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import umc.precending.domain.Post.NewsPost;
+import umc.precending.domain.post.NewsPost;
 import umc.precending.dto.image.ImageDto;
 
 import java.time.LocalDateTime;

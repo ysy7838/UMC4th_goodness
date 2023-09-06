@@ -1,4 +1,4 @@
-package umc.precending.controller.Person;
+package umc.precending.controller.person;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import umc.precending.domain.member.Member;
 import umc.precending.exception.member.MemberNotFoundException;
 import umc.precending.repository.member.MemberRepository;
-import umc.precending.service.PersonService.PersonService;
+import umc.precending.service.personService.PersonService;
 import umc.precending.response.Response;
 
 @RestController

@@ -4,8 +4,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import umc.precending.domain.Recommend.PersonTodayRecommend;
-import umc.precending.domain.Recommend.Recommend;
+import umc.precending.domain.recommend.PersonTodayRecommend;
+import umc.precending.domain.recommend.Recommend;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

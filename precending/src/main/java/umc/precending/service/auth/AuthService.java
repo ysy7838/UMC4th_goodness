@@ -8,7 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umc.precending.config.jwt.TokenProvider;
-import umc.precending.domain.Recommend.Recommend;
+import umc.precending.domain.recommend.Recommend;
 import umc.precending.domain.member.Club;
 import umc.precending.domain.member.Corporate;
 import umc.precending.domain.member.Member;

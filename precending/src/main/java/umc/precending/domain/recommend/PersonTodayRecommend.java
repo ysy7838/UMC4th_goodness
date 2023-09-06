@@ -1,4 +1,4 @@
-package umc.precending.domain.Recommend;
+package umc.precending.domain.recommend;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

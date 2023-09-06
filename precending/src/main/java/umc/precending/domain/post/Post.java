@@ -1,4 +1,4 @@
-package umc.precending.domain.Post;
+package umc.precending.domain.post;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

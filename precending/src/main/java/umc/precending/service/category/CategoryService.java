@@ -13,7 +13,6 @@ import umc.precending.repository.category.CategoryRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 /*
 * 배려, 돕기, 기부, 양보, 용기
 * */

@@ -14,13 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PersonService {
-    private final PersonRepository personRepository;
-    private final CorporateRepository corporateRepository;
-    private final ClubRepository clubRepository;
-    private final MemberRepository memberRepository;
-    private final Person_CorporateRepository personCorporateRepository;
-    private final Person_ClubRepository personClubRepository;
-
     //사용자가 응원할 corporate을 선택하고 그 corporate에 점수를 주는 로직
     @Transactional
     public void addScoreCorporate(String CorporateUsername,Member member){

@@ -7,5 +7,4 @@ import umc.precending.domain.category.PostCategory;
 import java.util.List;
 
 public interface PostCategoryRepository extends JpaRepository<PostCategory, Long> {
-    List<PostCategory> findAllByPost(Post post);
 }

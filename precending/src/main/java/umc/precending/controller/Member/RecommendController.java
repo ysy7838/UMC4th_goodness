@@ -26,7 +26,7 @@ public class RecommendController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "나의 추천 선행목록을 하나 보여줍니다,그리고 열어본 점수를 더합니다", notes = "나의 추천 선행 목록을 보여주는 로직")
     public Response showOne(@PathVariable int num){
-        Member findMember=getMember();
+        Member findMember = getMember();
         SingleRecommendShowDto singleRecommendShowDto=recommendService.recommendSingleShowDto(num,findMember);
         return Response.success(singleRecommendShowDto);
     }
@@ -35,7 +35,7 @@ public class RecommendController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "나의 추천 선행 목록을 바꿉니다", notes = "나의 추천 선행 목록을 바꾸는 로직")
     public void changeAll(){
-        Member findMember=getMember();
+        Member findMember = getMember();
         recommendService.changeMyRecommendAll(findMember);
     }
 
@@ -43,7 +43,7 @@ public class RecommendController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "나의 추천 선행 목록을 바꿀수 있는 상태로 바꿉니다", notes = "나의 추천 선행 목록을 바꿀수 있는 상태로 바꾸는 로직")
     public void makeChangeable(){
-        Member findMember=getMember();
+        Member findMember = getMember();
         recommendService.makeChangeableRecommendation(findMember);
     }
 
@@ -51,7 +51,7 @@ public class RecommendController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value="사용자가 자신의 추천 선행을 다시 랜덤으로 돌릴 수 있는 기회를 보여줍니다",notes = "자신의 추천 선행을 랜덤으로 돌릴 수 있는 횟수를 보여주는 로직")
     public Response showRecommendRandomCount(){
-        Member findMember=getMember();
+        Member findMember = getMember();
         LeftRandomRecommendCountDto leftRandomRecommendCountDto=new LeftRandomRecommendCountDto(recommendService.showLeftRandomCount(findMember));
         return Response.success(leftRandomRecommendCountDto);
     }

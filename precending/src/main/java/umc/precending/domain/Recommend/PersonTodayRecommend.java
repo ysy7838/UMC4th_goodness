@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import umc.precending.domain.base.BaseEntity;
-import umc.precending.domain.member.Member;
 import umc.precending.domain.member.Person;
 
 import javax.persistence.*;
@@ -33,5 +32,4 @@ public class PersonTodayRecommend extends BaseEntity {
         personTodayRecommend.setRecommend(recommend);
         return personTodayRecommend;
     }
-
 }

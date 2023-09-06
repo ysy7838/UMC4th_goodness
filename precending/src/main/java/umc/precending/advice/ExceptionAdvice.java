@@ -12,7 +12,6 @@ import umc.precending.exception.person.PersonAddClubException;
 import umc.precending.exception.person.PersonAddCorporateException;
 import umc.precending.exception.category.CategoryDuplicateException;
 import umc.precending.exception.category.CategoryNotFoundException;
-import umc.precending.exception.email.AuthNumNotCorrectException;
 import umc.precending.exception.image.ImageNotSupportedException;
 import umc.precending.exception.member.MemberDuplicateException;
 import umc.precending.exception.member.MemberLoginFailureException;

@@ -8,8 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import umc.precending.domain.member.Member;
-import umc.precending.dto.person.ClubIdDto;
-import umc.precending.dto.person.CorporateIdDto;
 import umc.precending.exception.member.MemberNotFoundException;
 import umc.precending.repository.member.MemberRepository;
 import umc.precending.service.PersonService.PersonService;

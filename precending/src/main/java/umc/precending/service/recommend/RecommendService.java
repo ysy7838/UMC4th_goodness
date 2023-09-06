@@ -10,7 +10,6 @@ import umc.precending.domain.Recommend.PersonTodayRecommend;
 import umc.precending.domain.Recommend.Recommend;
 import umc.precending.domain.category.Category;
 import umc.precending.domain.category.RecommendCategory;
-import umc.precending.domain.member.Member;
 import umc.precending.domain.member.Person;
 import umc.precending.dto.Recommend.SingleRecommendShowDto;
 import umc.precending.dto.admin.RecommendCreateDto;
@@ -20,7 +19,6 @@ import umc.precending.exception.RecommendGoodness.RecommendNullException;
 import umc.precending.exception.RecommendGoodness.RecommendSaveException;
 import umc.precending.exception.category.CategoryNotFoundException;
 import umc.precending.repository.category.CategoryRepository;
-import umc.precending.repository.member.MemberRepository;
 import umc.precending.repository.member.PersonRepository;
 import umc.precending.repository.personTodayRecommendRepository.PersonTodayRecommendRepository;
 import umc.precending.repository.post.RecommendPostRepository;
@@ -63,9 +61,7 @@ public class RecommendService {
         });
     }
 
-
     //추천 선행을 바꿀 수 있는 상태로 변경합니다. 추후 인스타그램이나 광고 시청을 하고 이 로직을 호출하기 하면 될 듯
-
     @Transactional
     public void makeChangeableRecommendation(Person person){
         person.makeChangeableRecommend();
@@ -128,7 +124,6 @@ public class RecommendService {
         return recommends;
     }
 
-
     //사용자의 추천 선행을 하나 보여주고 사용자가 열어본 점수를 더하는 로직
    @Transactional
     public SingleRecommendShowDto recommendSingleShowDto(int num,Person person){
@@ -190,7 +185,6 @@ public class RecommendService {
         RecommendPost recommendPost=new RecommendPost(personTodayRecommends.get(num));
         postService.makeRecommendPost(recommendPost);
     }
-
 
     //추천 선행 저장을 취소합니다
     @Transactional

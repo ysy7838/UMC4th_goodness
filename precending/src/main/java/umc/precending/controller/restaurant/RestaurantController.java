@@ -4,11 +4,13 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import umc.precending.domain.restaurant.Restaurant;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import umc.precending.response.Response;
 import umc.precending.service.restaurant.RestaurantService;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,25 +20,23 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
 
     @GetMapping("/main_home/restaurant")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value="가게 목록", notes = "홈화면에 노출될 가게 목록")
-    public List<Restaurant> searchResult() {
-        List<Restaurant> restList = restaurantService.setRestaurantList();
-        return restList;
+    public Response searchResult() {
+        return Response.success(restaurantService.setRestaurantList());
     }
 
     @GetMapping("/main_home/restaurant/info")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value="가게 정보", notes = "노출된 가게를 클릭했을 때 나타나는 가게의 정보")
-    public Restaurant restaurantInfo(@RequestParam String name) {
-        return restaurantService.getRestrauntInfo(name);
+    public Response restaurantInfo(@RequestParam String name) {
+        return Response.success(restaurantService.getRestrauntInfo(name));
     }
 
     @GetMapping("/map_home")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value="가게 정보", notes = "노출된 가게를 클릭했을 때 나타나는 가게의 정보")
-    public List<Restaurant> mapResult() {
-        List<Restaurant> restList = restaurantService.setRestaurantMapList();
-        return restList;    }
-
+    public Response mapResult() {
+        return Response.success(restaurantService.setRestaurantMapList());
+    }
 }

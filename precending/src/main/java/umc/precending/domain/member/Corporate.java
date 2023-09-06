@@ -41,6 +41,4 @@ public class Corporate extends Member {
         this.CofRC=0;
         this.changeRecommend=false;
     }
-
-
 }

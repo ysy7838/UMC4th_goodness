@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ClubRepository extends JpaRepository<Club, Long> {
     List<Club> findTop5ByScoreGreaterThanOrderByScoreDesc(int scoreThreshold);//내가 추가한것
+    boolean existsClubByEmail(String email);
 }

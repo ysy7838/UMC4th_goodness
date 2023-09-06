@@ -1,4 +1,4 @@
-package umc.precending.controller.Member;
+package umc.precending.controller.member;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,6 @@ import umc.precending.dto.Recommend.SingleRecommendShowDto;
 import umc.precending.exception.member.MemberNotFoundException;
 import umc.precending.repository.member.MemberRepository;
 import umc.precending.response.Response;
-import umc.precending.service.Member.MemberGroupService;
 import umc.precending.service.recommend.RecommendService;
 
 @RestController
@@ -23,7 +22,6 @@ public class RecommendController {
     private final RecommendService recommendService;
     private final MemberRepository memberRepository;
 
-
     @PatchMapping("/show/MyRecommend/{num}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "나의 추천 선행목록을 하나 보여줍니다,그리고 열어본 점수를 더합니다", notes = "나의 추천 선행 목록을 보여주는 로직")
@@ -32,7 +30,6 @@ public class RecommendController {
         SingleRecommendShowDto singleRecommendShowDto=recommendService.recommendSingleShowDto(num,findMember);
         return Response.success(singleRecommendShowDto);
     }
-
 
     @PatchMapping("/change/MyRecommend")
     @ResponseStatus(HttpStatus.OK)
@@ -50,7 +47,6 @@ public class RecommendController {
         recommendService.makeChangeableRecommendation(findMember);
     }
 
-
     @GetMapping("/show/MyRecommend/count")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value="사용자가 자신의 추천 선행을 다시 랜덤으로 돌릴 수 있는 기회를 보여줍니다",notes = "자신의 추천 선행을 랜덤으로 돌릴 수 있는 횟수를 보여주는 로직")
@@ -66,5 +62,4 @@ public class RecommendController {
 
         return memberRepository.findMemberByUsername(username).orElseThrow(MemberNotFoundException::new);
     }
-
 }

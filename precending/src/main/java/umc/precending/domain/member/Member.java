@@ -48,14 +48,12 @@ public abstract class Member extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     protected Authority authority; // 사용자가 어떠한 회원인지를 명시(ex) 개인 회원, 동아리 회원, 기업 회원 등)
 
-
-    @Column(name="CofRC",nullable = false)
+    @Column(name = "CofRC", nullable = false)
     protected int CofRC;
 
     public void addCofRc(){
-       CofRC++;
+       this.CofRC++;
     }
-
 
     @Column(name = "changeRecommend",nullable = false)
     protected boolean changeRecommend;
@@ -67,7 +65,7 @@ public abstract class Member extends BaseEntity {
         this.changeRecommend=false;
     }
 
-    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<MemberTodayRecommend> memberTodayRecommends=new ArrayList<>();
 
     public void setMyTodayRecommendList(List<Recommend> recommends){

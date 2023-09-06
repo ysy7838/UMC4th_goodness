@@ -1,19 +1,12 @@
-package umc.precending.service.Member;
+package umc.precending.service.member;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import umc.precending.domain.Recommend.MemberTodayRecommend;
-import umc.precending.domain.Recommend.Recommend;
 import umc.precending.domain.member.*;
 import umc.precending.dto.person.NameScoreClubDto;
 import umc.precending.dto.person.NameScoreCorporateDto;
-import umc.precending.exception.RecommendGoodness.CannotChangeableRecommendException;
-import umc.precending.repository.memberTodayRecommendRepository.MemberTodayRecommendRepository;
-import umc.precending.repository.recommendRepository.RecommendRepository;
 import umc.precending.repository.member.*;
 
 import java.util.List;
@@ -23,9 +16,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MemberGroupService {
-    private final MemberRepository memberRepository;
-    private final RecommendRepository recommendRepository;
-    private final MemberTodayRecommendRepository memberTodayRecommendRepository;
     private final CorporateRepository corporateRepository;
     private final ClubRepository clubRepository;
     private final Person_ClubRepository personClubRepository;

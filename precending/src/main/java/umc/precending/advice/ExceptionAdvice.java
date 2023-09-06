@@ -5,10 +5,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import umc.precending.exception.RecommendGoodness.CanNotFindRecommendPost;
 import umc.precending.exception.RecommendGoodness.CannotChangeableRecommendException;
-import umc.precending.exception.RecommendGoodness.RecommendNullException;
-import umc.precending.exception.RecommendGoodness.RecommendSaveException;
 import umc.precending.exception.email.AuthNumNotCorrectException;
 import umc.precending.exception.member.*;
 import umc.precending.exception.person.PersonAddClubException;
@@ -131,24 +128,6 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response postNewsNotSupportedException(PostNewsNotSupportedException e) {
         return Response.failure(400, e.getMessage());
-    }
-
-    @ExceptionHandler(RecommendNullException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public Response recommendNullException(){
-        return Response.failure(400,"대부분의 추천 선행 저장으로 인해 보여줄 것이 없습니다");
-    }
-
-    @ExceptionHandler(RecommendSaveException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public Response RecommendSaveException(){
-        return Response.failure(409,"이미 이 추천 선행을 저장하였습니다");
-    }
-
-    @ExceptionHandler(CanNotFindRecommendPost.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Response CanNotFindRecommendPost(){
-        return Response.failure(404,"해당 추천 선행은 저장되지 않았습니다.");
     }
 
 }

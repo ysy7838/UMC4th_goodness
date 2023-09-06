@@ -20,10 +20,6 @@ public class MemberPersonSignUpDto {
     @ApiModelProperty(value = "회원가입에 필요한 사용자의 생년월일", example = "99991231")
     private String birth;
 
-    @NotBlank(message = "회원가입에 필요한 핸드폰 번호를 입력해주세요.")
-    @ApiModelProperty(value = "회원가입에 필요한 사용자의 핸드폰 번호", example = "010-1234-5678")
-    private String phone;
-
     @NotBlank(message = "회원가입에 필요한 이메일을 입력해주세요.")
     @ApiModelProperty(value = "회원가입에 필요한 사용자의 이메일", example = "test@test.com")
     private String email;

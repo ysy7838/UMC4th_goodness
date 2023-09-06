@@ -40,7 +40,7 @@ public class AuthService {
     @Transactional
     public void signUp(MemberPersonSignUpDto signUpDto) {
         Person personMember = getPersonMember(signUpDto);
-        List<Recommend> recommends=recommendRepository.selectRandom();
+        List<Recommend> recommends = recommendRepository.selectRandom();
         personMember.setMyTodayRecommendList(recommends);
         memberRepository.save(personMember);
     }
@@ -109,15 +109,15 @@ public class AuthService {
 
     // 입력한 정보를 바탕으로 유효성을 검사한 뒤, Person 객체를 반환하는 로직
     private Person getPersonMember(MemberPersonSignUpDto signUpDto) {
-        if(personRepository.existsPersonByPhone(signUpDto.getPhone())) throw new MemberDuplicateException();
+        if(personRepository.existsPersonByEmail(signUpDto.getEmail())) throw new MemberDuplicateException();
 
         return new Person(signUpDto.getName(), signUpDto.getBirth(),
-                passwordEncoder.encode(signUpDto.getPassword()), signUpDto.getEmail(), signUpDto.getPhone());
+                passwordEncoder.encode(signUpDto.getPassword()), signUpDto.getEmail());
     }
 
     // 입력한 정보를 바탕으로 유효성을 검사한 뒤, Club 객체를 반환하는 로직
     private Club getClubMember(MemberClubSignUpDto signUpDto) {
-        if(clubRepository.existsById(100L)) throw new MemberDuplicateException();
+        if(clubRepository.existsClubByEmail(signUpDto.getEmail())) throw new MemberDuplicateException();
 
         return new Club(signUpDto.getName(), signUpDto.getBirth(), passwordEncoder.encode(signUpDto.getPassword()),
                 signUpDto.getEmail(), signUpDto.getType(), signUpDto.getSchool(), signUpDto.getAddress());
@@ -125,7 +125,7 @@ public class AuthService {
 
     // 입력한 정보를 바탕으로 유효성을 검사한 뒤, Corporate 객체를 반환하는 로직
     private Corporate getCorporateMember(MemberCorporateSignUpDto signUpDto) {
-        if(corporateRepository.existsCorporateByRegistrationNumber(signUpDto.getRegistrationNumber()))
+        if(corporateRepository.existsCorporateByRegistrationNumberOrEmail(signUpDto.getRegistrationNumber(), signUpDto.getEmail()))
             throw new MemberDuplicateException();
 
         return new Corporate(signUpDto.getName(), signUpDto.getBirth(), passwordEncoder.encode(signUpDto.getPassword()),

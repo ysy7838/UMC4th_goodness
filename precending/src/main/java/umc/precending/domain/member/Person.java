@@ -17,9 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Person extends Member{
-    @Column(name = "phone", nullable = false, unique = true)
-    private String phone; // 개인 회원의 핸드폰 번호
-
     @Column(name = "phoneValidation", nullable = false)
     private boolean phoneValidation; // 개인 회원의 핸드폰 인증 여부
 
@@ -43,9 +40,7 @@ public class Person extends Member{
         personClub.setPerson(this);
     }
 
-
-    public Person(String name, String birth, String password,
-                  String email, String phone) {
+    public Person(String name, String birth, String password, String email) {
         this.name = name;
         this.username = email;
         this.birth = birth;
@@ -53,10 +48,9 @@ public class Person extends Member{
         this.email = email;
         this.emailValidation = false;
         this.introduction = "";
-        this.phone = phone;
         this.phoneValidation = false;
         this.authority = Authority.ROLE_PERSON;
-        this.CofRC=0;
+        this.CofRC = 0;
         this.changeRecommend=false;
     }
 }

@@ -29,7 +29,4 @@ public class TodayRecommendAdminController {
     public void deleteRecommendPost(Long id) {
        recommendService.deleteRecommendById(id);
     }
-
-
-
 }

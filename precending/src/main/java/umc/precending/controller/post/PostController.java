@@ -40,6 +40,13 @@ public class PostController {
         return Response.success(postService.findOne(id));
     }
 
+    @GetMapping("/posts/corporate")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "최신 기업 게시글 조회", notes = "기업이 작성한 최신 뉴스들을 조회하는 로직")
+    public Response findCorporatePost() {
+        return Response.success(postService.getCorporatePost());
+    }
+
     @PostMapping("/posts/valid/news")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "인증 가능 게시글 생성 - 기사", notes = "인증 가능한 기사 게시글을 생성하는 로직")

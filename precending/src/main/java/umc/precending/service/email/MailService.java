@@ -44,7 +44,7 @@ public class MailService {
     public void joinEmail(String email) {
         ExistEmail(email);
         makeRandomNumber();
-        String setFrom = "dionisos198@naver.com"; // email-config에 설정한 자신의 이메일 주소를 입력
+        String setFrom = "chrkb1569@naver.com"; // email-config에 설정한 자신의 이메일 주소를 입력
         String toMail = email;
         String title = "회원 가입 인증 이메일 입니다."; // 이메일 제목
         String content =
@@ -80,21 +80,5 @@ public class MailService {
             System.out.println(member);
             throw new MemberDuplicateException();
         }
-    }
-
-    //비밀번호 재설정 이메일
-    public void sendSetPasswordEmail(String email) throws MessagingException {
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
-        mimeMessageHelper.setFrom("ysy7838@naver.com");
-        mimeMessageHelper.setTo(email);
-        mimeMessageHelper.setSubject("Set Passowrd");
-        mimeMessageHelper.setText("""
-        <div>
-          <a href="http://localhost:8080/api/auth/set-password?email=%s" target="_blank">click link to set password</a>
-        </div>
-        """.formatted(email), true);
-
-        mailSender.send(mimeMessage);
     }
 }

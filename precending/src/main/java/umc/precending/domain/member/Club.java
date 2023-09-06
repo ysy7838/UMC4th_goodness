@@ -30,8 +30,6 @@ public class Club extends Member {
         this.score+=score;
     }
 
-    public void cancelScore(int score){this.score-=score;}
-
     public void resetScore(){
         this.score=0;
     }
@@ -50,6 +48,8 @@ public class Club extends Member {
         this.address = address;
         this.type = type;
         this.score=0;
+        this.CofRC=0;
+        this.changeRecommend=false;
     }
 
 }

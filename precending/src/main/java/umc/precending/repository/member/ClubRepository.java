@@ -12,4 +12,6 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
 
     @Query(value = "select c from Club c order by function('RAND')")
     List<Club> findOneByRandom(Pageable pageable);
+
+    boolean existsClubByEmail(String email);
 }

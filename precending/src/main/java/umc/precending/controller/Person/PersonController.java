@@ -8,8 +8,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import umc.precending.domain.member.Member;
-import umc.precending.dto.person.AddPointClubDto;
-import umc.precending.dto.person.AddPointCorporateDto;
+import umc.precending.dto.person.ClubIdDto;
+import umc.precending.dto.person.CorporateIdDto;
 import umc.precending.exception.member.MemberNotFoundException;
 import umc.precending.repository.member.MemberRepository;
 import umc.precending.service.PersonService.PersonService;
@@ -25,18 +25,35 @@ public class PersonController {
     @PatchMapping("/add/cheer/corporate")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "개인이 기업에 점수 주기", notes = "개인이 기업에 점수를 주는 로직")
-    @ApiImplicitParam(name = "addPointCorporateDto", value = "기업의 이메일을 입력해주세요")
-    public void addCorporate(@RequestBody AddPointCorporateDto addPointCorporateDto) {
+    @ApiImplicitParam(name = "corporateIdDto", value = "기업의 이메일을 입력해주세요")
+    public void addCorporate(@RequestBody CorporateIdDto corporateIdDto) {
         Member findMember=getMember();
-        personService.addScoreCorporate(addPointCorporateDto.getCorporateId(),findMember);
+        personService.addScoreCorporate(corporateIdDto.getCorporateId(),findMember);
+    }
+    @DeleteMapping ("/cancel/cheer/corporate")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation(value = "개인이 기업에 점수 준 것을 취소하기", notes = "개인이 기업에 점수를 준 것을 취소하는 로직")
+    @ApiImplicitParam(name = "corporateIdDto", value = "기업의 이메일을 입력해주세요")
+    public void cancelCorporate(@RequestBody CorporateIdDto corporateIdDto) {
+        Member findMember=getMember();
+        personService.cancelScoreCorporate(corporateIdDto.getCorporateId(),findMember);
     }
     @PatchMapping ("/add/cheer/club")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "개인이 동아리에 점수 주기", notes = "개인이 동아리에 점수를 주는 로직")
-    @ApiImplicitParam(name = "addPointClubDto", value = "동아리의 이메일을 입력해주세요")
-    public void addClub(@RequestBody AddPointClubDto addPointClubDto) {
+    @ApiImplicitParam(name = "clubIdDto", value = "동아리의 이메일을 입력해주세요")
+    public void addClub(@RequestBody ClubIdDto clubIdDto) {
         Member findMember=getMember();
-        personService.addScoreClub(addPointClubDto.getClubId(),findMember);
+        personService.addScoreClub(clubIdDto.getClubId(),findMember);
+    }
+
+    @DeleteMapping ("/cancel/cheer/club")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation(value = "개인이 동아리에 점수 준 것을 취소하기", notes = "개인이 동아리에 점수를 준 것을 취소하는 로직")
+    @ApiImplicitParam(name = "clubIdDto", value = "동아리의 이메일을 입력해주세요")
+    public void cancelClub(@RequestBody ClubIdDto clubIdDto) {
+        Member findMember=getMember();
+        personService.cancelScoreClub(clubIdDto.getClubId(),findMember);
     }
 
 

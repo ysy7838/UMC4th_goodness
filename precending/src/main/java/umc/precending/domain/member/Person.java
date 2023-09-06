@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.precending.domain.Recommend.PersonTodayRecommend;
+import umc.precending.domain.Recommend.Recommend;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,6 +25,43 @@ public class Person extends Member{
     //내가 추가한 것
     @OneToMany(mappedBy = "person",cascade = CascadeType.ALL)
     private List<Person_Corporate> personCorporates=new ArrayList<>();
+
+    @Column(name="CofRC",nullable = false)
+    protected int CofRC;
+
+    public void addCofRc(){
+        CofRC++;
+    }
+
+
+    @Column(name = "changeRecommend",nullable = false)
+    protected boolean changeRecommend;
+
+    public void makeChangeableRecommend(){
+        this.changeRecommend=true;
+    }
+    public void makeNotChangeableRecommend(){
+        this.changeRecommend=false;
+    }
+
+    @OneToMany(mappedBy = "person",cascade = CascadeType.ALL)
+    private List<PersonTodayRecommend> personTodayRecommends =new ArrayList<>();
+
+    public void setMyTodayRecommendList(List<Recommend> recommends){
+        personTodayRecommends.clear();
+        for (Recommend recommend : recommends) {
+            PersonTodayRecommend personTodayRecommend = PersonTodayRecommend.createMemberTodayRecommend(recommend);
+            personTodayRecommends.add(personTodayRecommend);
+            personTodayRecommend.setPerson(this);
+        }
+    }
+
+    public void addMyTodayRecommend(Recommend recommend){
+        PersonTodayRecommend personTodayRecommend = PersonTodayRecommend.createMemberTodayRecommend(recommend);
+        personTodayRecommends.add(personTodayRecommend);
+        personTodayRecommend.setPerson(this);
+    }
+
 
     //내가 추가한 것:연관관계 편의 메서드
     public void addMyCorporate(Corporate corporate){

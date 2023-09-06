@@ -1,4 +1,4 @@
-package umc.precending.controller.member;
+package umc.precending.controller.Member;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -6,19 +6,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import umc.precending.domain.member.Member;
+import umc.precending.dto.person.MemberUpdateRequestDto;
 import umc.precending.exception.member.MemberNotFoundException;
 import umc.precending.repository.member.MemberRepository;
-import umc.precending.response.Response;
-import umc.precending.service.member.MemberService;
+import umc.precending.service.Member.MemberService;
 
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,27 +33,29 @@ public class MemberController {
         memberService.saveImage(file, member);
     }
 
-    @GetMapping("/member/valid")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "게시글 조회 - 인증 가능", notes = "사용자가 작성한 인증 가능한 게시글들의 현황을 조회하는 로직")
-    public Response getValidPostStatus() {
-        Member member = getMember();
-        return Response.success(memberService.getValidPostStatus(member));
-    }
-
-    @GetMapping("/member/normal")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "게시글 조회 - 인증 불가능", notes = "사용자가 작성한 인증 불가능한 게시글들의 현황을 조회하는 로직")
-    public Response getNormalPostStatus() {
-        Member member = getMember();
-        return Response.success(memberService.getNormalPostStatus(member));
-    }
-
     // 현재 로그인하고 있는 사용자의 정보를 통해 정보 반환
     public Member getMember() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         return memberRepository.findMemberByUsername(authentication.getName())
                 .orElseThrow(MemberNotFoundException::new);
+    }
+
+    @PutMapping("/member/update")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "회원정보 수정", notes = "회원의 정보를 수정하는 로직")
+    @ApiImplicitParam(name = "request", value = "회원정보 수정을 위한 요청객체")
+    public void updateMember(@Valid @RequestBody MemberUpdateRequestDto request) {
+        Member member = getMember();
+        memberService.updateMember(member, request); // 현재 로그인하고 있는 계정 수정
+    }
+
+    @DeleteMapping("/member/delete-member")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "회원 탈퇴", notes = "회원 탈퇴를 진행하는 로직")
+    @ApiImplicitParam(name = "username", value = "탈퇴할 회원 이름")
+    public void deleteMember() {
+        Member member = getMember();
+        memberService.deleteMember(member); // 현재 로그인하고 있는 계정 탈퇴
     }
 }

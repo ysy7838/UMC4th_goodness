@@ -50,6 +50,25 @@ public class PersonService {
             throw new PersonAddCorporateException();
         }
     }
+    @Transactional
+    public void cancelScoreCorporate(String corporateUsername,Member member){
+        Member member1=memberRepository.findMemberByUsername(corporateUsername).orElseThrow(MemberNotFoundException::new);
+        Corporate corporate;
+        Person person;
+        if(member1 instanceof Corporate && member instanceof Person){
+            corporate=(Corporate)member1;
+            person=(Person)member;
+        }
+        else{
+            throw new MemberWrongTypeException();
+        }
+        if(personCorporateRepository.existsByPerson_IdAndCorporate_Id(person.getId(),corporate.getId())){
+            corporate.cancelScore(1);
+            personCorporateRepository.deleteByPerson_IdAndCorporate_Id(person.getId(),corporate.getId());
+        }else{
+            throw new MemberNotFoundException();
+        }
+    }
     //사용자가 응원할 club을 선택하고 그 club에 점수를 주는 로직
     @Transactional
     public void addScoreClub(String ClubUsername,Member member){
@@ -68,6 +87,25 @@ public class PersonService {
         }
         else{
             throw new PersonAddClubException();
+        }
+    }
+    @Transactional
+    public void cancelScoreClub(String clubUsername,Member member){
+        Member member1=memberRepository.findMemberByUsername(clubUsername).orElseThrow(MemberNotFoundException::new);
+        Club club;
+        Person person;
+        if(member1 instanceof Club && member instanceof Person){
+            club=(Club)member1;
+            person=(Person)member;
+        }
+        else{
+            throw new MemberWrongTypeException();
+        }
+        if(personClubRepository.existsByPerson_IdAndClub_Id(person.getId(),club.getId())){
+            club.cancelScore(1);
+            personClubRepository.deleteByPerson_IdAndClub_Id(person.getId(),club.getId());
+        }else{
+            throw new MemberNotFoundException();
         }
     }
     //로그인한 사용자가 자기가 선택한 corporate를 알파벳 순서대로 상위 5개를 보여준다

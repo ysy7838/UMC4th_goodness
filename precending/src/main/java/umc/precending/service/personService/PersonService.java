@@ -1,4 +1,4 @@
-package umc.precending.service.PersonService;
+package umc.precending.service.personService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import umc.precending.domain.member.*;
 import umc.precending.dto.person.NameScoreClubDto;
 import umc.precending.dto.person.NameScoreCorporateDto;
-import umc.precending.repository.member.*;
 
 import java.util.List;
 

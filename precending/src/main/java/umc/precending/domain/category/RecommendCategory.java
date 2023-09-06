@@ -3,7 +3,7 @@ package umc.precending.domain.category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import umc.precending.domain.Recommend.Recommend;
+import umc.precending.domain.recommend.Recommend;
 
 import javax.persistence.*;
 

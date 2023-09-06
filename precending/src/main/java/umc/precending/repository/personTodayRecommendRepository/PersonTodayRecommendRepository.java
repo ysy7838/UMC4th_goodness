@@ -2,7 +2,7 @@ package umc.precending.repository.personTodayRecommendRepository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import umc.precending.domain.Recommend.PersonTodayRecommend;
+import umc.precending.domain.recommend.PersonTodayRecommend;
 
 import java.util.List;
 

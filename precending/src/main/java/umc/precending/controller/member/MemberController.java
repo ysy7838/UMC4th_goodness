@@ -12,7 +12,7 @@ import umc.precending.domain.member.Member;
 import umc.precending.dto.person.MemberUpdateRequestDto;
 import umc.precending.exception.member.MemberNotFoundException;
 import umc.precending.repository.member.MemberRepository;
-import umc.precending.service.Member.MemberService;
+import umc.precending.service.member.MemberService;
 
 import javax.validation.Valid;
 

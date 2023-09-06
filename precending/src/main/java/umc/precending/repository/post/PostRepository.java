@@ -1,7 +1,7 @@
 package umc.precending.repository.post;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import umc.precending.domain.Post.Post;
+import umc.precending.domain.post.Post;
 
 import java.util.List;
 

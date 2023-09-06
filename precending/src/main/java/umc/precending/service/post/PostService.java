@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,14 +17,17 @@ import umc.precending.domain.Post.Post;
 import umc.precending.domain.category.Category;
 import umc.precending.domain.category.PostCategory;
 import umc.precending.domain.image.PostImage;
+import umc.precending.domain.member.Corporate;
 import umc.precending.domain.member.Member;
 import umc.precending.dto.post.*;
 import umc.precending.exception.category.CategoryNotFoundException;
+import umc.precending.exception.member.MemberNotFoundException;
 import umc.precending.exception.post.PostAuthException;
 import umc.precending.exception.post.PostNewsNotSupportedException;
 import umc.precending.exception.post.PostNotFoundException;
 import umc.precending.exception.post.PostVerifyException;
 import umc.precending.repository.category.CategoryRepository;
+import umc.precending.repository.member.MemberRepository;
 import umc.precending.repository.post.PostRepository;
 import umc.precending.service.image.ImageService;
 
@@ -37,6 +41,7 @@ import java.util.stream.IntStream;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
     private final ImageService imageService;
 
@@ -71,6 +76,16 @@ public class PostService {
 
         return postList.stream()
                 .map(post -> new PostResponseDto().toDto(post))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostResponseDto> getCorporatePost() {
+        List<Post> recentPostList = getCorporatePosts();
+        if(recentPostList.isEmpty()) throw new PostNotFoundException();
+
+        return recentPostList.stream()
+                .map(value -> new PostResponseDto<>().toDto(value))
                 .collect(Collectors.toList());
     }
 
@@ -194,11 +209,11 @@ public class PostService {
 
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setHeadless(true);
-        chromeOptions.addArguments("--remote-allow-origins=*");
         chromeOptions.addArguments("--lang=ko");
         chromeOptions.addArguments("--no-sandbox");
         chromeOptions.addArguments("--disable-dev-shm-usage");
         chromeOptions.addArguments("--disable-gpu");
+        chromeOptions.addArguments("--remote-allow-origins=*");
         chromeOptions.setCapability("ignoreProtectedModeSettings", true);
 
         WebDriver driver = new ChromeDriver(chromeOptions);
@@ -261,6 +276,17 @@ public class PostService {
 
     private Post getPost(Long id) {
         return postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+    }
+
+    private List<Post> getCorporatePosts() {
+        List<Post> postList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "firstCreatedDate"));
+
+        return postList.stream()
+                .filter(post ->
+                        memberRepository
+                                .findMemberByUsername(post.getWriter())
+                                .orElseThrow(MemberNotFoundException::new) instanceof Corporate)
+                .collect(Collectors.toList());
     }
 
     private boolean checkValidation(Member member, Post post) {

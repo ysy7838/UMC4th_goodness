@@ -18,7 +18,6 @@ import javax.validation.Valid;
 public class MailController {
     private final MailService mailService;
 
-
     @PostMapping("/mail/Send")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value="이메일 요청",notes = "이메일에 인증번호 요청을 위한 logic")
@@ -27,6 +26,7 @@ public class MailController {
         mailService.joinEmail(emailDto.getEmail());
         return Response.success("5분안에 인증번호를 넣어주세요!");
     }
+
     @PostMapping("/mail/auth/check")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value="인증번호 요청",notes = "이메일 인증번호가 맞는지 확인하는 logic")
@@ -35,6 +35,4 @@ public class MailController {
         mailService.CheckAuthNum(emailCheckDto.getEmail(),emailCheckDto.getAuthNum());
         return Response.success("인증되었습니다");
     }
-
-
 }

@@ -23,6 +23,7 @@ public class Recommend {
         this.goodness=goodness;
         addCategories(categories);
     }
+
     @OneToMany(mappedBy = "recommend",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private List<RecommendCategory> recommendCategories=new ArrayList<>();
 

@@ -14,5 +14,5 @@ import java.util.List;
 @Setter
 public class SingleRecommendShowDto {
     private String goodness;
-    private List<String> categories=new ArrayList<>();
+    private List<String> categories = new ArrayList<>();
 }

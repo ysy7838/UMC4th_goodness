@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.precending.domain.Post.NormalPost;
-import umc.precending.dto.category.CategoryResponseDto;
 import umc.precending.dto.image.ImageDto;
 
 import java.time.LocalDateTime;

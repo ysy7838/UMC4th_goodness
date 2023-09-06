@@ -23,7 +23,6 @@ public class Person_Club extends BaseEntity {
     @JoinColumn(name = "person_Id")
     private Person person;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Club_Id")
     private Club club;
@@ -33,8 +32,5 @@ public class Person_Club extends BaseEntity {
         personClub.setClub(club);
         club.addScore(score);
         return personClub;
-    }
-    public void cancel(){
-
     }
 }

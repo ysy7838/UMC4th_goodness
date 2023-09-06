@@ -24,8 +24,6 @@ public class RecommendPost extends Post{
     @JoinColumn(name = "recommend_id")
     private Recommend recommend;
 
-
-
     public RecommendPost(PersonTodayRecommend personTodayRecommend){
         this.recommend=personTodayRecommend.getRecommend();
         this.writer=personTodayRecommend.getPerson().getUsername();
@@ -37,7 +35,4 @@ public class RecommendPost extends Post{
         this.day=LocalDate.now().getDayOfMonth();
         addCategories(personTodayRecommend.getRecommend().getRecommendCategories().stream().map(c->new PostCategory(c)).collect(Collectors.toList()));
     }
-
-
-
 }

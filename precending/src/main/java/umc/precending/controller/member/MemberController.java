@@ -1,4 +1,4 @@
-package umc.precending.controller.Member;
+package umc.precending.controller.member;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;

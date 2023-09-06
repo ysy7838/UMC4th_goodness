@@ -1,6 +1,5 @@
 package umc.precending.dto.school;
 
-
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

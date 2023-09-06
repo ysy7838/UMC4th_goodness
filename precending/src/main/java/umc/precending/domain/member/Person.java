@@ -33,7 +33,6 @@ public class Person extends Member{
         CofRC++;
     }
 
-
     @Column(name = "changeRecommend",nullable = false)
     protected boolean changeRecommend;
 
@@ -61,7 +60,6 @@ public class Person extends Member{
         personTodayRecommends.add(personTodayRecommend);
         personTodayRecommend.setPerson(this);
     }
-
 
     //내가 추가한 것:연관관계 편의 메서드
     public void addMyCorporate(Corporate corporate){

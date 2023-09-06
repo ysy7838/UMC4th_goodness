@@ -24,7 +24,6 @@ public class Person_Corporate extends BaseEntity {
     @JoinColumn(name = "person_Id")
     private Person person;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Corporate_Id")
     private Corporate corporate;
@@ -35,13 +34,5 @@ public class Person_Corporate extends BaseEntity {
         corporate.addScore(score);
         return personCorporate;
     }
-    public void cancel(){
-
-    }
-
-
-
-
-
 }
 
